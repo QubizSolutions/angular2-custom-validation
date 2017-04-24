@@ -1,0 +1,47 @@
+{
+  "name": "angular2-ts-starter-kit",
+  "version": "2.0.0-rc",
+  "description": "Angular 2.X starter kit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AntJanus/angular2-ts-starter-kit.git"
+  },
+  "author": "Antonin Januska @antjanus",
+  "bugs": {
+    "url": "https://github.com/AntJanus/angular2-ts-starter-kit/issues"
+  },
+  "scripts": {
+    "test": "gulp build"
+  },
+  "homepage": "https://github.com/AntJanus/angular2-ts-starter-kit#readme",
+  "dependencies": {
+    "@angular/common": "2.4.5",
+    "@angular/compiler": "2.4.5",
+    "@angular/core": "2.4.5",
+    "@angular/forms": "2.4.5",
+    "@angular/http": "2.4.5",
+    "@angular/platform-browser": "2.4.5",
+    "@angular/platform-browser-dynamic": "2.4.5",
+    "@angular/router": "3.4.5",
+    "@angular/router-deprecated": "2.0.0-rc.2",
+    "@angular/upgrade": "2.4.5",
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.22",
+    "angular2-infinite-scroll": "^0.3.42",
+    "core-js": "2.4.1",
+    "ngx-infinite-scroll": "^0.4.1",
+    "reflect-metadata": "^0.1.9",
+    "rxjs": "5.0.3",
+    "zone.js": "^0.7.6"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0",
+    "standard-version": "4.0.0",
+    "ts-loader": "^2.0.0",
+    "typescript": "^2.1.5",
+    "typings": "^2.1.0",
+    "webpack": "^1.14.0",
+    "webpack-stream": "^3.2.0",
+    "@types/node": "^6.0.46"
+  }
+}

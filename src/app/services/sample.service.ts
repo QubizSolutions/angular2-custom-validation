@@ -1,0 +1,96 @@
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class MyService {
+  Items: Array<string>;
+
+  constructor() {
+    this.Items = new Array<string>();
+    this.Items.push(
+      "According to Jim ",
+      "Avatar: The Last Airbender ",
+      "Bones ",
+      "Criminal Minds ",
+      "Deadwood",
+      "Entourage ",
+      "Family Guy",
+      "Friends ",
+      "House ",
+      "How I Met Your Mother ",
+      "Justice League Unlimited ",
+      "Married with Children ",
+      "One Tree Hill ",
+      "Prison Break ",
+      "Smallville",
+      "Supernatural ",
+      "Surface ",
+      "The King of Queens ",
+      "The Simpsons ",
+      "Two and a Half Men ",
+      "Weeds ",
+      "Torchwood ",
+      "Dexter",
+      "Heroes ",
+      "The Big Bang Theory ",
+      "Misfits ",
+      "Kyle XY ",
+      "True Blood ",
+      "Skins ",
+      "Californication ",
+      "Chuck",
+      "Reaper ",
+      "GREEK ",
+      "Fringe ",
+      "The Mentalist ",
+      "Castle",
+      "Lie to Me ",
+      "White Collar ",
+      "FlashForward ",
+      "The Vampire Diaries ",
+      "Spartacus ",
+      "Modern Family ",
+      "Cougar Town ",
+      "Sons of Tucson ",
+      "Sherlock",
+      "Justified ",
+      "Workaholics ",
+      "Game of Thrones ",
+      "The Walking Dead",
+      "Young Justice ",
+      "Raising Hope ",
+      "Under the Dome ",
+      "Falling Skies ",
+      "The Legend of Korra ",
+      "Grimm",
+      "Once Upon a Time ",
+      "American Horror Story ",
+      "Anger Management ",
+      "Arrow ",
+      "Elementary ",
+      "Go On ",
+      "Banshee",
+      "Hannibal",
+      "Bad Education",
+      "Marvel's Agents of S.H.I.E.L.D. ",
+      "Da Vinci's Demons ",
+      "Silicon Valley ",
+      "The 100 ",
+      "Almost Human ",
+      "Brooklyn Nine-Nine ",
+      "The Flash (2014) ",
+      "Gotham",
+      "Constantine",
+      "Daredevil ",
+      "iZombie",
+      "The Messengers",
+      "Scorpion",
+      "DC’s Legends Of Tomorrow ",
+      "The Shannara Chronicles ");
+  }
+
+  public getItems(takeNext: number) {
+    var takeOnce = 15;
+    var skip = takeNext * takeOnce;
+    return this.Items.slice(skip, skip + takeOnce );
+  }
+}
