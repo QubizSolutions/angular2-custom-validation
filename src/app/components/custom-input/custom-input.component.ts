@@ -4,12 +4,19 @@ import { ValidationMessages } from '../../services/validation-messages.service'
 @Component({
   selector: 'custom-input',
   template: `
-      <br/>
-      <span *ngIf="label">{{label}}</span>
-      <br/>
-      <input [value]="customText" (input)="customText = $event.target.value">
-      <span *ngIf="errorMessage" style="color:red">{{errorMessage}}</span>
-      <br/>
+      <div class="form-group" [ngClass]="{ 'has-danger': errorMessage, 'has-success': !errorMessage}">
+        <label class="form-control-label">{{label}}</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [ngClass]="{ 
+            'form-control-danger': errorMessage, 
+            'form-control-success': !errorMessage}" 
+          [value]="customText" 
+          (input)="customText = $event.target.value"/>
+        <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>
+      </div>
+
       `
 })
 

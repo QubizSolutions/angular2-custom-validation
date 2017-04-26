@@ -1,17 +1,32 @@
+<div class="container">
+    Length validation enabled: 
+    <input 
+        type="checkbox" 
+        [checked]="lengthValidationEnabled" 
+        (change)="lengthValidationEnabled = !lengthValidationEnabled"/>
+    <br/>
+    <custom-input 
+        #ci1 
+        [label]="customForm.firstName.label" 
+        [(customText)]="customForm.firstName.value" 
+        [validationRule]="customForm.firstName.customRule" 
+        [required]="true">
+    </custom-input>
+    <custom-input 
+        #ci2 
+        [label]="customForm.lastName.label" 
+        [(customText)]="customForm.lastName.value" 
+        [validationRule]="customForm.lastName.customRule" 
+        [required]="true">
+    </custom-input>
+    <field-input 
+        [validationProperty]="customForm.nickName">
+    </field-input>
+    <br/>
+    <div style="display: block;">
+        <custom-dropdown></custom-dropdown>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-outline-primary" (click)="ci1.forceValidation(); ci2.forceValidation()">Submit</button>
 
-Length validation enabled: <input type="checkbox" [checked]="lengthValidationEnabled" (change)="lengthValidationEnabled = !lengthValidationEnabled"/>
-<br/>
-<custom-input #ci1 [label]="customForm.firstName.label" [(customText)]="customForm.firstName.value" [validationRule]="customForm.firstName.customRule" [required]="true"></custom-input>
-
-<custom-input #ci2 [label]="customForm.lastName.label" [(customText)]="customForm.lastName.value" [validationRule]="customForm.lastName.customRule" [required]="true"></custom-input>
-
-<field-input [validationProperty]="customForm.nickName"></field-input>
-
-<br/>
-<div style="display: block;">
-    <custom-dropdown></custom-dropdown>
 </div>
-
-<br/>
-<button (click)="ci1.forceValidation(); ci2.forceValidation()">Submit</button>
-

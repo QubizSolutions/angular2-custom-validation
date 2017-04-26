@@ -1,19 +1,26 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ValidationMessages } from '../../services/validation-messages.service'
 import { Field } from '../../models/field.model'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'field-input',
   template: `
-      <br/>
-      <span *ngIf="validationProperty.label">{{validationProperty.label}}</span>
-      <br/>
-      <input [value]="customText" (input)="customText = $event.target.value">
-      <span *ngIf="errorMessage" style="color:red">{{errorMessage}}</span>
-      <br/>
+      <div class="form-group" [ngClass]="{ 'has-danger': errorMessage}">
+        <label class="form-control-label" *ngIf="validationProperty.label" for="nickname">{{validationProperty.label}}</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [ngClass]="{ 
+            'form-control-danger': errorMessage}"  
+          id="nickname" 
+          [value]="customText" 
+          (input)="customText = $event.target.value">
+        <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>
+      </div>
       `
 })
-
+  
 export class FieldInput {
 
   private errorMessage: string;

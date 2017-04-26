@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ValidationMessages } from './services/validation-messages.service'
 import { Field } from './models/field.model'
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'my-app',
     templateUrl: './app/app.component.html'
