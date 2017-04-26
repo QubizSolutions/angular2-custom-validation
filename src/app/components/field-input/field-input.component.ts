@@ -1,6 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { ValidationMessages } from '../../services/validation-messages.service'
 import { Field } from '../../models/field.model'
+import { InputGroup } from '../../models/input-group.model'
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -18,14 +20,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
           (input)="customText = $event.target.value">
         <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>
       </div>
-      `
+      `,
+  providers: [{ provide: InputGroup, useExisting: forwardRef(() => FieldInput) }]
+
 })
-  
-export class FieldInput {
+
+export class FieldInput extends InputGroup {
 
   private errorMessage: string;
   private validationMessages: ValidationMessages;
   constructor(_validationMessages: ValidationMessages) {
+    super();
     this.errorMessage = "";
     this.validationMessages = _validationMessages;
   }

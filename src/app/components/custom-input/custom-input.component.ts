@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { ValidationMessages } from '../../services/validation-messages.service'
+import { InputGroup } from '../../models/input-group.model'
 
 @Component({
   selector: 'custom-input',
@@ -17,14 +18,16 @@ import { ValidationMessages } from '../../services/validation-messages.service'
         <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>
       </div>
 
-      `
+      `,
+  providers: [{ provide: InputGroup, useExisting: forwardRef(() => CustomInput) }]
 })
 
-export class CustomInput {
+export class CustomInput extends InputGroup {
 
   private errorMessage: string;
   private validationMessages: ValidationMessages;
   constructor(_validationMessages: ValidationMessages) {
+    super();
     this.errorMessage = "";
     this.validationMessages = _validationMessages;
   }
@@ -51,11 +54,12 @@ export class CustomInput {
   set customText(val: string) {
     this.myPrivateValue = val;
     var errors = new Array<string>();
-    if (this.required) {
-      this.validationMessages.IsRequired(val, errors);
-    }
 
     if (this.validationRule != undefined) {
+      if (this.required) {
+        this.validationMessages.IsRequired(val, errors);
+      }
+
       errors = errors.concat(this.validationRule(val));
     }
 
