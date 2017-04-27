@@ -8,7 +8,13 @@ import { CustomInput } from './components/custom-input/custom-input.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'my-app',
-    templateUrl: './app/app.component.html'
+    templateUrl: './app/app.component.html',
+    styles: [`
+    .dropdown-content {
+      max-height: 200px;
+      overflow: auto;
+    }
+  `],
 })
 export class AppComponent {
     @ViewChildren(forwardRef(() => InputGroup)) allInputItems: QueryList<InputGroup>;
@@ -20,15 +26,18 @@ export class AppComponent {
     customForm = {
         firstName: new Field,
         lastName: new Field,
+        occupation: new Field,
         nickName: new Field,
         gender: Boolean,
         //...
         favoritSerial: new Field
     };
 
+    valid: boolean = false;
+    submitMessage: string = '';
     lengthValidationEnabled: boolean;
     validationRule: Function;
-
+    
     private validationMessages: ValidationMessages;
     constructor(_validationMessages: ValidationMessages) {
         this.validationMessages = _validationMessages;
@@ -47,6 +56,7 @@ export class AppComponent {
             return errors;
         }
         this.customForm.lastName.label = "Last name";
+        this.customForm.occupation.label = "Occupation";
 
         this.customForm.nickName.label = "Nick name";
         this.customForm.nickName.required = true;
@@ -60,9 +70,24 @@ export class AppComponent {
 
         this.customForm.favoritSerial.label = "Series";
         this.lengthValidationEnabled = true;
+
+        this.customForm.favoritSerial.disabled = true;
+        this.customForm.nickName.disabled = true;
     }
 
     submit = function () {
-        this.allInputItems.forEach(inputInstance => inputInstance.forceValidation());
+        var allValid = true;
+        this.allInputItems.forEach(inputInstance => allValid = inputInstance.forceValidation() && allValid)
+        this.valid = allValid;
+        if (this.valid) {
+            this.submitMessage = 'Valid'
+        } else {
+            this.submitMessage = 'Not Valid'
+        }
+    }
+
+    status() {
+        this.customForm.nickName.disabled = !this.customForm.nickName.disabled
+        this.customForm.favoritSerial.disabled = !this.customForm.favoritSerial.disabled
     }
 }

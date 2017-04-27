@@ -1,0 +1,22 @@
+.required_field:after  {
+    color: #d00;
+    content: "*";
+    position: relative;
+    margin-left: 4px;
+    top:0px;
+}
+
+#searchDropdown {
+    width: 100%;
+    padding: 5px;
+}
+.dropdown-menu {
+    width: 100%;
+    border-top: 0px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+}
+.dropdown-item.series {
+    position: relative;
+    width: 300px;
+}

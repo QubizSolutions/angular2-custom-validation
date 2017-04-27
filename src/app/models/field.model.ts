@@ -6,4 +6,5 @@ export class Field {
     required: Boolean;
     minLength: number;
     maxLength: number;
+    disabled: boolean;
 }

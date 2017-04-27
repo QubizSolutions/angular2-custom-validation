@@ -8,13 +8,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'field-input',
   template: `
-      <div class="form-group" [ngClass]="{ 'has-danger': errorMessage}">
-        <label class="form-control-label" *ngIf="validationProperty.label" for="nickname">{{validationProperty.label}}</label>
+      <div class="form-group" [ngClass]="{ 'has-danger': errorMessage && myPrivateValue != undefined, 'has-success': !errorMessage && myPrivateValue != undefined}">
+        <label class="form-control-label" [ngClass]="{'required_field': validationProperty.required}" *ngIf="validationProperty.label" for="nickname" >{{validationProperty.label}}</label>
         <input 
           type="text" 
-          class="form-control" 
-          [ngClass]="{ 
-            'form-control-danger': errorMessage}"  
+          class="form-control form-control-danger form-control-success"
+          [disabled]="validationProperty.disabled"
           id="nickname" 
           [value]="customText" 
           (input)="customText = $event.target.value">
@@ -72,6 +71,7 @@ export class FieldInput extends InputGroup {
       this.myPrivateValue = "";
     }
     this.customText = this.myPrivateValue;
+    return this.errorMessage == "";
   }
 }
 

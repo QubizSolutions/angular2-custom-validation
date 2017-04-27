@@ -6,18 +6,14 @@ import { InputGroup } from '../../models/input-group.model'
   selector: 'custom-input',
   template: `
       <div class="form-group" [ngClass]="{ 'has-danger': errorMessage && myPrivateValue != undefined, 'has-success': !errorMessage && myPrivateValue != undefined}">
-        <label class="form-control-label">{{label}}</label>
+        <label class="form-control-label" [ngClass]="{'required_field': required }">{{label}}</label>
         <input 
           type="text" 
-          class="form-control" 
-          [ngClass]="{ 
-            'form-control-danger': errorMessage, 
-            'form-control-success': !errorMessage}" 
+          class="form-control form-control-danger form-control-success" 
           [value]="customText" 
           (input)="customText = $event.target.value"/>
         <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>
       </div>
-
       `,
   providers: [{ provide: InputGroup, useExisting: forwardRef(() => CustomInput) }]
 })
@@ -77,6 +73,7 @@ export class CustomInput extends InputGroup {
       this.myPrivateValue = "";
     }
     this.customText = this.myPrivateValue;
+    return this.errorMessage == "";
   }
 }
 
