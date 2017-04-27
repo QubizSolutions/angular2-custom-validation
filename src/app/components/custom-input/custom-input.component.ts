@@ -55,11 +55,11 @@ export class CustomInput extends InputGroup {
     this.myPrivateValue = val;
     var errors = new Array<string>();
 
+    if (this.myPrivateValue != undefined && this.required) {
+      this.validationMessages.IsRequired(val, errors);
+    }
+    
     if (this.validationRule != undefined) {
-      if (this.required) {
-        this.validationMessages.IsRequired(val, errors);
-      }
-
       errors = errors.concat(this.validationRule(val));
     }
 

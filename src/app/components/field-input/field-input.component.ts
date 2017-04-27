@@ -35,14 +35,10 @@ export class FieldInput extends InputGroup {
     this.validationMessages = _validationMessages;
   }
 
+  private myPrivateValue: string;
   @Input() validationProperty: Field;
 
-  // customText property change event
-  private myPrivateValue: string;
-  @Output() customTextChange = new EventEmitter();
-
   // customText getter
-  @Input()
   get customText() {
     if (this.myPrivateValue == undefined) {
       return "";
@@ -66,7 +62,7 @@ export class FieldInput extends InputGroup {
       this.errorMessage = errors.join(" | ");
     }
     else {
-      this.customTextChange.emit(this.myPrivateValue);
+      this.validationProperty.value = this.myPrivateValue;
       this.errorMessage = "";
     }
   }

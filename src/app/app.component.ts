@@ -23,7 +23,7 @@ export class AppComponent {
         nickName: new Field,
         gender: Boolean,
         //...
-        favoritSerial: String
+        favoritSerial: new Field
     };
 
     lengthValidationEnabled: boolean;
@@ -58,7 +58,7 @@ export class AppComponent {
             return errors;
         };
 
-
+        this.customForm.favoritSerial.label = "Series";
         this.lengthValidationEnabled = true;
     }
 
