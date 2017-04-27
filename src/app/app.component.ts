@@ -8,8 +8,7 @@ import { CustomInput } from './components/custom-input/custom-input.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'my-app',
-    templateUrl: './app/app.component.html',
-    providers: [CustomInput, InputGroup, FieldInput]
+    templateUrl: './app/app.component.html'
 })
 export class AppComponent {
     @ViewChildren(forwardRef(() => InputGroup)) allInputItems: QueryList<InputGroup>;
@@ -64,6 +63,6 @@ export class AppComponent {
     }
 
     submit = function () {
-        this.allInputItems.forEach(inputInstance => console.log(inputInstance));
+        this.allInputItems.forEach(inputInstance => inputInstance.forceValidation());
     }
 }

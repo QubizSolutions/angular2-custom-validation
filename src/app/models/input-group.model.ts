@@ -1,1 +1,3 @@
-export class InputGroup {}
+export abstract class InputGroup {
+    abstract forceValidation: Function;
+}

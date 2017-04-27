@@ -71,7 +71,7 @@ export class FieldInput extends InputGroup {
     }
   }
 
-  public forceValidation = function () {
+  forceValidation = function () {
     if (this.myPrivateValue == undefined) {
       this.myPrivateValue = "";
     }

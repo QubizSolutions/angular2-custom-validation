@@ -5,7 +5,7 @@ import { InputGroup } from '../../models/input-group.model'
 @Component({
   selector: 'custom-input',
   template: `
-      <div class="form-group" [ngClass]="{ 'has-danger': errorMessage, 'has-success': !errorMessage}">
+      <div class="form-group" [ngClass]="{ 'has-danger': errorMessage && myPrivateValue != undefined, 'has-success': !errorMessage && myPrivateValue != undefined}">
         <label class="form-control-label">{{label}}</label>
         <input 
           type="text" 
@@ -72,7 +72,7 @@ export class CustomInput extends InputGroup {
     }
   }
 
-  public forceValidation = function () {
+  forceValidation = function () {
     if (this.myPrivateValue == undefined) {
       this.myPrivateValue = "";
     }
