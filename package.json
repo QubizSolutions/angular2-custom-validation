@@ -33,14 +33,16 @@
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
+    "@types/node": "^6.0.46",
     "gulp": "^3.9.1",
     "gulp-connect": "^5.0.0",
+    "gulp-json-srv": "^1.0.1",
+    "lodash": "^4.17.4",
     "standard-version": "4.0.0",
     "ts-loader": "^2.0.0",
     "typescript": "^2.1.5",
     "typings": "^2.1.0",
     "webpack": "^1.14.0",
-    "webpack-stream": "^3.2.0",
-    "@types/node": "^6.0.46"
+    "webpack-stream": "^3.2.0"
   }
 }
