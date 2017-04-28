@@ -1,96 +1,32 @@
 import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+var SERIES_API: string = 'http://localhost:3000/series';
 
 @Injectable()
 export class MyService {
+  baseUrl: string = 'http://localhost:3000/series';
+  searchByName: string = '?name_like=';
   Items: Array<string>;
 
-  constructor() {
-    this.Items = new Array<string>();
-    this.Items.push(
-      "According to Jim ",
-      "Avatar: The Last Airbender ",
-      "Bones ",
-      "Criminal Minds ",
-      "Deadwood",
-      "Entourage ",
-      "Family Guy",
-      "Friends ",
-      "House ",
-      "How I Met Your Mother ",
-      "Justice League Unlimited ",
-      "Married with Children ",
-      "One Tree Hill ",
-      "Prison Break ",
-      "Smallville",
-      "Supernatural ",
-      "Surface ",
-      "The King of Queens ",
-      "The Simpsons ",
-      "Two and a Half Men ",
-      "Weeds ",
-      "Torchwood ",
-      "Dexter",
-      "Heroes ",
-      "The Big Bang Theory ",
-      "Misfits ",
-      "Kyle XY ",
-      "True Blood ",
-      "Skins ",
-      "Californication ",
-      "Chuck",
-      "Reaper ",
-      "GREEK ",
-      "Fringe ",
-      "The Mentalist ",
-      "Castle",
-      "Lie to Me ",
-      "White Collar ",
-      "FlashForward ",
-      "The Vampire Diaries ",
-      "Spartacus ",
-      "Modern Family ",
-      "Cougar Town ",
-      "Sons of Tucson ",
-      "Sherlock",
-      "Justified ",
-      "Workaholics ",
-      "Game of Thrones ",
-      "The Walking Dead",
-      "Young Justice ",
-      "Raising Hope ",
-      "Under the Dome ",
-      "Falling Skies ",
-      "The Legend of Korra ",
-      "Grimm",
-      "Once Upon a Time ",
-      "American Horror Story ",
-      "Anger Management ",
-      "Arrow ",
-      "Elementary ",
-      "Go On ",
-      "Banshee",
-      "Hannibal",
-      "Bad Education",
-      "Marvel's Agents of S.H.I.E.L.D. ",
-      "Da Vinci's Demons ",
-      "Silicon Valley ",
-      "The 100 ",
-      "Almost Human ",
-      "Brooklyn Nine-Nine ",
-      "The Flash (2014) ",
-      "Gotham",
-      "Constantine",
-      "Daredevil ",
-      "iZombie",
-      "The Messengers",
-      "Scorpion",
-      "DC’s Legends Of Tomorrow ",
-      "The Shannara Chronicles ");
-  }
+  constructor(private http: Http) {}
 
-  public getItems(takeNext: number) {
+  public getItems(takeNext: number, incrementPage: number): Observable<Array<string>> {
     var takeOnce = 15;
-    var skip = takeNext * takeOnce;
-    return this.Items.slice(skip, skip + takeOnce );
+    return this.http.get(SERIES_API+'?_page='+incrementPage+'&_limit='+takeOnce)
+        .map(function(response: Response) {
+            return response.json();
+        })
+  }
+  
+  public getItemsSearch(stringField: string): Observable<Array<string>> {
+    return this.http.get(SERIES_API+'?name_like='+stringField)
+        .map(function(response: Response) {
+            return response.json();
+        })
   }
 }
