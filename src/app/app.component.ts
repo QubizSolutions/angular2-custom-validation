@@ -71,7 +71,7 @@ export class AppComponent {
         this.customForm.favoritSerial.label = "Series";
         this.lengthValidationEnabled = true;
 
-        this.customForm.favoritSerial.disabled = true;
+        //this.customForm.favoritSerial.disabled = true;
         this.customForm.nickName.disabled = true;
     }
 

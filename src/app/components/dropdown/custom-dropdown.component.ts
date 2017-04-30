@@ -11,10 +11,9 @@ import { InputGroup } from '../../models/input-group.model'
     }
   `],
   template: `
-    <div>{{searchTerm}}</div>
     <div ngbDropdown [ngClass]="{ 'has-danger': errorMessage}">
       <label class="form-control-label" [ngClass]="{'required_field': required}">{{label}}</label>
-      <button class="btn btn-outline-primary form-control" id="dropdownBasic1" [disabled]="disabled" ngbDropdownToggle>{{selectedItem ? selectedItem : "None"}}</button>
+      <button class="btn btn-outline-primary form-control" id="dropdownBasic1" [disabled]="disabled" ngbDropdownToggle>{{selectedItem ? selectedItem.name : "None"}}</button>
       <div class="dropdown-menu">
         <input 
           id="searchDropdown" 
@@ -47,7 +46,6 @@ export class CustomDropdown extends InputGroup {
   scrollDistance = 1;
   dbProvider: MyService;
   searchTerm: string = '';
-  increment: number = 0;
   incrementPage: number = 1;
   selectedItem: string;
   private errorMessage: string;
@@ -72,26 +70,28 @@ export class CustomDropdown extends InputGroup {
   }
 
   addItems() {
+    // this.dbProvider
+    //   .getItems(this.incrementPage)
+    //   .subscribe((data: Array<any>) => {
+    //     this.array = this.array.concat(data);
+    //   })
     this.dbProvider
-      .getItems(this.increment, this.incrementPage)
+      .getItemsSearch(this.searchTerm, this.incrementPage)
       .subscribe((data: Array<any>) => {
-        this.array = this.array.concat(data);
-      })
-
+         this.array = this.array.concat(data);
+    });
   }
 
   onScrollDown() {
     this.addItems();
-    this.increment++;
     this.incrementPage++;
   }
 
   search(event) {
     this.searchTerm = event.target.value;
-    this.increment = 0;
     this.incrementPage = 1;
     this.dbProvider
-      .getItemsSearch(this.searchTerm)
+      .getItemsSearch(this.searchTerm, this.incrementPage)
       .subscribe((data: Array<any>) => {
       this.array = data
     });

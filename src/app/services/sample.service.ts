@@ -10,12 +10,10 @@ var SERIES_API: string = 'http://localhost:3000/series';
 @Injectable()
 export class MyService {
   baseUrl: string = 'http://localhost:3000/series';
-  searchByName: string = '?name_like=';
-  Items: Array<string>;
 
   constructor(private http: Http) {}
 
-  public getItems(takeNext: number, incrementPage: number): Observable<Array<string>> {
+  public getItems(incrementPage: number): Observable<Array<string>> {
     var takeOnce = 15;
     return this.http.get(SERIES_API+'?_page='+incrementPage+'&_limit='+takeOnce)
         .map(function(response: Response) {
@@ -23,8 +21,9 @@ export class MyService {
         })
   }
   
-  public getItemsSearch(stringField: string): Observable<Array<string>> {
-    return this.http.get(SERIES_API+'?name_like='+stringField)
+  public getItemsSearch(stringField: string, incrementPage: number): Observable<Array<string>> {
+    var takeOnce = 15;
+    return this.http.get(SERIES_API+'?name_like='+stringField+'&_page='+incrementPage+'&_limit='+takeOnce)
         .map(function(response: Response) {
             return response.json();
         })
