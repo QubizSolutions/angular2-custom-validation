@@ -1,7 +1,9 @@
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
 import { MyService } from '../../services/sample.service';
 import { InputGroup } from '../../models/input-group.model'
-
+import 'rxjs/add/operator/debounceTime';
 @Component({
   selector: 'custom-dropdown',
   styles: [`
@@ -15,12 +17,11 @@ import { InputGroup } from '../../models/input-group.model'
       <label class="form-control-label" [ngClass]="{'required_field': required}">{{label}}</label>
       <button class="btn btn-outline-primary form-control" id="dropdownBasic1" [disabled]="disabled" ngbDropdownToggle>{{selectedItem ? selectedItem.name : "None"}}</button>
       <div class="dropdown-menu">
-        <input 
+        <input
           id="searchDropdown" 
           type="text" 
-          placeholder="Search..." 
-          [ngModel]="searchTerm"
-          (keyup)="search($event)"
+          placeholder="Search..."
+          [formControl]="controlSearch"
           (click)="$event.stopPropagation()">
           
         <div class="dropdown-content" aria-labelledby="dropdownBasic1"
@@ -40,26 +41,42 @@ import { InputGroup } from '../../models/input-group.model'
   providers: [{ provide: InputGroup, useExisting: forwardRef(() => CustomDropdown) }]
 })
 
-export class CustomDropdown extends InputGroup {
+export class CustomDropdown extends InputGroup implements OnInit {
   array: Array<any>;
   throttle = 30;
   scrollDistance = 1;
-  dbProvider: MyService;
-  searchTerm: string = '';
   incrementPage: number = 1;
   selectedItem: string;
   private errorMessage: string;
+  searchTerm: string = "";
+  controlSearch = new FormControl();
 
   // Optional fields
   @Input() required: boolean;
   @Input() label: string;
   @Input() disabled: boolean;
 
-  constructor(myService: MyService) {
+  constructor(private dbProvider: MyService) {
     super();
-    this.dbProvider = myService;
     this.array = new Array<any>();
-    this.addItems();
+    this.incrementPage = 1;
+    this.dbProvider
+      .searchEntries(this.searchTerm, this.incrementPage)
+      .subscribe((data: Array<any>) => {
+        this.array = data
+      });
+  }
+
+  ngOnInit() {
+    var root = this;
+    this.controlSearch.valueChanges
+      .debounceTime(400)
+      .subscribe(term => {
+        root.dbProvider.searchEntries(term, root.incrementPage)
+          .subscribe((data: Array<any>) => { 
+            root.array = data; 
+          });
+      });
   }
 
   setSelected(selected: string) {
@@ -70,16 +87,11 @@ export class CustomDropdown extends InputGroup {
   }
 
   addItems() {
-    // this.dbProvider
-    //   .getItems(this.incrementPage)
-    //   .subscribe((data: Array<any>) => {
-    //     this.array = this.array.concat(data);
-    //   })
     this.dbProvider
-      .getItemsSearch(this.searchTerm, this.incrementPage)
+      .searchEntries(this.controlSearch.value, this.incrementPage)
       .subscribe((data: Array<any>) => {
-         this.array = this.array.concat(data);
-    });
+        this.array = this.array.concat(data);
+      });
   }
 
   onScrollDown() {
@@ -87,15 +99,6 @@ export class CustomDropdown extends InputGroup {
     this.incrementPage++;
   }
 
-  search(event) {
-    this.searchTerm = event.target.value;
-    this.incrementPage = 1;
-    this.dbProvider
-      .getItemsSearch(this.searchTerm, this.incrementPage)
-      .subscribe((data: Array<any>) => {
-      this.array = data
-    });
-  }
   forceValidation = function () {
     if (this.required && this.selectedItem == undefined) {
       this.errorMessage = "Please select something";
