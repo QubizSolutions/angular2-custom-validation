@@ -12,14 +12,6 @@ var SERIES_API: string = 'http://localhost:3000/series';
 export class MyService {
     constructor(private http: Http) { }
 
-    public getItems(incrementPage: number): Observable<Array<string>> {
-        var takeOnce = 15;
-        return this.http.get(SERIES_API + '?_page=' + incrementPage + '&_limit=' + takeOnce)
-            .map(function (response: Response) {
-                return response.json();
-            })
-    }
-
     public searchEntries(stringField: string, incrementPage: number): Observable<Array<string>> {
         var takeOnce = 15;
         return this.http.get(SERIES_API + '?name_like=' + stringField + '&_page=' + incrementPage + '&_limit=' + takeOnce)

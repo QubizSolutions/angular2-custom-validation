@@ -22,6 +22,7 @@ import 'rxjs/add/operator/debounceTime';
           type="text" 
           placeholder="Search..."
           [formControl]="controlSearch"
+          (ngModelChange)="searchByChangedTerm()"
           (click)="$event.stopPropagation()">
           
         <div class="dropdown-content" aria-labelledby="dropdownBasic1"
@@ -41,8 +42,8 @@ import 'rxjs/add/operator/debounceTime';
   providers: [{ provide: InputGroup, useExisting: forwardRef(() => CustomDropdown) }]
 })
 
-export class CustomDropdown extends InputGroup implements OnInit {
-  array: Array<any>;
+export class CustomDropdown extends InputGroup {
+  array: Array<any> = new Array<any>();
   throttle = 30;
   scrollDistance = 1;
   incrementPage: number = 1;
@@ -58,24 +59,23 @@ export class CustomDropdown extends InputGroup implements OnInit {
 
   constructor(private dbProvider: MyService) {
     super();
-    this.array = new Array<any>();
-    this.incrementPage = 1;
-    this.dbProvider
-      .searchEntries(this.searchTerm, this.incrementPage)
-      .subscribe((data: Array<any>) => {
-        this.array = data
-      });
+    this.initialItemsLoad(this.searchTerm);
   }
 
-  ngOnInit() {
-    var root = this;
+  initialItemsLoad(term) {
+    this.dbProvider
+      .searchEntries(term, this.incrementPage)
+      .subscribe((data: Array<any>) => {
+        this.array = data
+    });
+  }
+
+  searchByChangedTerm() {
     this.controlSearch.valueChanges
       .debounceTime(400)
       .subscribe(term => {
-        root.dbProvider.searchEntries(term, root.incrementPage)
-          .subscribe((data: Array<any>) => { 
-            root.array = data; 
-          });
+        this.incrementPage = 1;
+        this.initialItemsLoad(term);
       });
   }
 
@@ -86,16 +86,24 @@ export class CustomDropdown extends InputGroup implements OnInit {
     }
   }
 
-  addItems() {
+  loadItems(term) {
     this.dbProvider
-      .searchEntries(this.controlSearch.value, this.incrementPage)
+      .searchEntries(term, this.incrementPage)
       .subscribe((data: Array<any>) => {
         this.array = this.array.concat(data);
       });
   }
 
+  lazyLoadItems() {
+    if (this.controlSearch.value !== null) {
+      this.loadItems(this.controlSearch.value);
+    } else {
+      this.loadItems(this.searchTerm);
+    }
+  }
+
   onScrollDown() {
-    this.addItems();
+    this.lazyLoadItems();
     this.incrementPage++;
   }
 
