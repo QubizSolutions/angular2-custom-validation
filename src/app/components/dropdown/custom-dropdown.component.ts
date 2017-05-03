@@ -1,9 +1,9 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
 import { MyService } from '../../services/sample.service';
 import { InputGroup } from '../../models/input-group.model'
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 @Component({
   selector: 'custom-dropdown',
   styles: [`
@@ -65,18 +65,15 @@ export class CustomDropdown extends InputGroup {
   initialItemsLoad(term) {
     this.dbProvider
       .searchEntries(term, this.incrementPage)
-      .subscribe((data: Array<any>) => {
-        this.array = data
-    });
+      .subscribe((data: Array<any>) => this.array = data);
   }
 
   searchByChangedTerm() {
+    this.incrementPage = 1;
     this.controlSearch.valueChanges
       .debounceTime(400)
-      .subscribe(term => {
-        this.incrementPage = 1;
-        this.initialItemsLoad(term);
-      });
+      .distinctUntilChanged()
+      .subscribe(term => this.initialItemsLoad(term));
   }
 
   setSelected(selected: string) {
@@ -89,9 +86,7 @@ export class CustomDropdown extends InputGroup {
   loadItems(term) {
     this.dbProvider
       .searchEntries(term, this.incrementPage)
-      .subscribe((data: Array<any>) => {
-        this.array = this.array.concat(data);
-      });
+      .subscribe((data: Array<any>) => this.array = this.array.concat(data));
   }
 
   lazyLoadItems() {
