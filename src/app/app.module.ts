@@ -5,6 +5,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AppComponent } from './app.component';
 import { CustomInput } from './components/custom-input/custom-input.component';
 import { FieldInput } from './components/field-input/field-input.component';
+import { CustomRadioGroup } from './components/radio/custom-radio-group.component';
 
 import { CustomDropdown } from './components/dropdown/custom-dropdown.component'
 import { MyService } from './services/sample.service';
@@ -19,6 +20,7 @@ import { HttpModule } from '@angular/http';
   declarations: [
     AppComponent,
     CustomInput,
+    CustomRadioGroup,
     FieldInput, 
     CustomDropdown,
   ],

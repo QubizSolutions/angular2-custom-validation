@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
-import { ValidationMessages } from '../../services/validation-messages.service'
-import { InputGroup } from '../../models/input-group.model'
+import { ValidationMessages } from '../../services/validation-messages.service';
+import { Field } from '../../models/field.model'
+import { InputGroup } from '../../models/input-group.model';
 
 @Component({
   selector: 'custom-input',
@@ -9,7 +10,8 @@ import { InputGroup } from '../../models/input-group.model'
         <label class="form-control-label" [ngClass]="{'required_field': required }">{{label}}</label>
         <input 
           type="text" 
-          class="form-control form-control-danger form-control-success" 
+          class="form-control form-control-danger form-control-success"
+          [disabled]="disabled"
           [value]="customText" 
           (input)="customText = $event.target.value"/>
         <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>
@@ -32,6 +34,7 @@ export class CustomInput extends InputGroup {
   @Input() validationRule: Function;
   @Input() required: boolean;
   @Input() label: string;
+  @Input() disabled: boolean = false;
 
   // customText property change event
   private myPrivateValue: string;

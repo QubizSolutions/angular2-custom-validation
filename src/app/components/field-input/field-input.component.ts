@@ -9,11 +9,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   selector: 'field-input',
   template: `
       <div class="form-group" [ngClass]="{ 'has-danger': errorMessage && myPrivateValue != undefined, 'has-success': !errorMessage && myPrivateValue != undefined}">
-        <label class="form-control-label" [ngClass]="{'required_field': validationProperty.required}" *ngIf="validationProperty.label" for="nickname" >{{validationProperty.label}}</label>
+        <label class="form-control-label" [ngClass]="{'required_field': validationObject.required}" *ngIf="validationObject.label" for="nickname" >{{validationObject.label}}</label>
         <input 
           type="text" 
           class="form-control form-control-danger form-control-success"
-          [disabled]="validationProperty.disabled"
+          [disabled]="validationObject.disabled"
           id="nickname" 
           [value]="customText" 
           (input)="customText = $event.target.value">
@@ -35,7 +35,7 @@ export class FieldInput extends InputGroup {
   }
 
   private myPrivateValue: string;
-  @Input() validationProperty: Field;
+  @Input() validationObject: Field;
 
   // customText getter
   get customText() {
@@ -49,19 +49,19 @@ export class FieldInput extends InputGroup {
   set customText(val: string) {
     this.myPrivateValue = val;
     var errors = new Array<string>();
-    if (this.validationProperty.required) {
+    if (this.validationObject.required) {
       this.validationMessages.IsRequired(val, errors);
     }
 
-    if (this.validationProperty.customRule != undefined) {
-      errors = errors.concat(this.validationProperty.customRule(val));
+    if (this.validationObject.customRule != undefined) {
+      errors = errors.concat(this.validationObject.customRule(val));
     }
 
     if (errors.length > 0) {
       this.errorMessage = errors.join(" | ");
     }
     else {
-      this.validationProperty.value = this.myPrivateValue;
+      this.validationObject.value = this.myPrivateValue;
       this.errorMessage = "";
     }
   }

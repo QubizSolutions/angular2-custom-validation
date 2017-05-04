@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, ContentChildren, ViewChildren, QueryList, forwardRef } from '@angular/core';
-import { ValidationMessages } from './services/validation-messages.service'
-import { Field } from './models/field.model'
-import { InputGroup } from './models/input-group.model'
-import { FieldInput } from './components/field-input/field-input.component'
-import { CustomInput } from './components/custom-input/custom-input.component'
-
+import { ValidationMessages } from './services/validation-messages.service';
+import { Field } from './models/field.model';
+import { InputGroup } from './models/input-group.model';
+import { FieldInput } from './components/field-input/field-input.component';
+import { CustomInput } from './components/custom-input/custom-input.component';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { RadioItem } from './models/radio-item.model';
+import { RadioField } from './models/radio-field.model';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'my-app',
@@ -28,9 +30,11 @@ export class AppComponent {
         lastName: new Field,
         occupation: new Field,
         nickName: new Field,
-        gender: Boolean,
+        gender: new RadioField,
+        accept: new RadioField,
         //...
         favoritSerial: new Field
+        
     };
 
     valid: boolean = false;
@@ -40,6 +44,7 @@ export class AppComponent {
     
     private validationMessages: ValidationMessages;
     constructor(_validationMessages: ValidationMessages) {
+
         this.validationMessages = _validationMessages;
         var _this = this;
         this.customForm.firstName.label = "First name"
@@ -60,6 +65,7 @@ export class AppComponent {
 
         this.customForm.nickName.label = "Nick name";
         this.customForm.nickName.required = true;
+        this.customForm.nickName.disabled = true;
         this.customForm.nickName.customRule = function (value: string) {
             var errors = new Array<string>();
             if (_this.customForm.firstName.value != undefined && !_this.customForm.firstName.value.startsWith(value)) {
@@ -67,12 +73,21 @@ export class AppComponent {
             }
             return errors;
         };
+        this.customForm.gender.disabled = false;
+        this.customForm.gender.required = true;
+        this.customForm.gender.items = [new RadioItem(1, "gender", "Male"), new RadioItem(2, "gender", "Female")]
+
+        this.customForm.accept.disabled = false;
+        this.customForm.accept.required = true;
+        this.customForm.accept.items = [new RadioItem(1, "accept", "Yes"), new RadioItem(2, "accept", "No"), new RadioItem(3, "accept", "Maybe")]
+
 
         this.customForm.favoritSerial.label = "Series";
+        this.customForm.favoritSerial.required = true
         this.lengthValidationEnabled = true;
 
         //this.customForm.favoritSerial.disabled = true;
-        this.customForm.nickName.disabled = true;
+        
     }
 
     submit = function () {
@@ -88,6 +103,6 @@ export class AppComponent {
 
     status() {
         this.customForm.nickName.disabled = !this.customForm.nickName.disabled
-        this.customForm.favoritSerial.disabled = !this.customForm.favoritSerial.disabled
+        // this.customForm.favoritSerial.disabled = !this.customForm.favoritSerial.disabled
     }
 }

@@ -2,35 +2,54 @@
     <div class="row">
         <div class="col-6">
             <custom-input [label]="customForm.firstName.label" [(customText)]="customForm.firstName.value" [validationRule]="customForm.firstName.customRule"
-            [required]="true">
+                [required]="true">
             </custom-input>
         </div>
         <div class="col-6">
             <custom-input [label]="customForm.lastName.label" [(customText)]="customForm.lastName.value" [validationRule]="customForm.lastName.customRule"
-            [required]="true">
+                [required]="true">
             </custom-input>
         </div>
         <div class="col-6">
             <custom-input [label]="customForm.occupation.label" [(customText)]="customForm.occupation.value" [validationRule]="customForm.occupation.customRule"
-            [required]="true">
+                [required]="true">
             </custom-input>
         </div>
         <div class="col-6">
-            <field-input [validationProperty]="customForm.nickName"> </field-input>
+            <custom-input [label]="customForm.nickName.label" [(customText)]="customForm.nickName.value" [validationRule]="customForm.nickName.customRule"
+                [required]="true" [disabled]="customForm.nickName.disabled">
+            </custom-input>
         </div>
         <div class="col-12">
-            <custom-dropdown [disabled]='customForm.favoritSerial.disabled' [label]="customForm.favoritSerial.label" [required]="true"></custom-dropdown>
-            <br/>
-            <button type="submit" class="btn btn-outline-primary" (click)="submit()">Submit</button>
-            <span>{{submitMessage}}</span>
-            <h4 style="margin-top:20px">Options</h4>
-            
-            <input type="checkbox" [checked]="lengthValidationEnabled" (change)="lengthValidationEnabled = !lengthValidationEnabled"/>
+            <custom-dropdown [validationObject]="customForm.favoritSerial"></custom-dropdown>
+            <br>
+        </div>
+
+        <div class="col-6">
+            <h5>Options</h5>
+            <input type="checkbox" [checked]="lengthValidationEnabled" (change)="lengthValidationEnabled = !lengthValidationEnabled"
+            />
             <label for="">Length validation for First name enabled</label>
             <br>
-            <input type="checkbox" [checked]="customForm.nickName.disabled" (change)="status()"/>
-            <label for="">Enable/Disable Input </label> 
+            <input type="checkbox" [checked]="customForm.nickName.disabled" (change)="status()" />
+            <label for="">Enable/Disable Input </label>
         </div>
-       
+
+        <div class="col-6">
+            <custom-radio-group [validationObject]="customForm.gender"></custom-radio-group>
+            
+            <label>Selected gender: {{customForm.gender.value}}</label>
+            
+        </div>
+        <div class="col-6">
+            <h5>Do you accept the terms?</h5>
+            <custom-radio-group [validationObject]="customForm.accept"></custom-radio-group>
+            <label>Answer: {{customForm.accept.value}}</label>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-outline-primary" (click)="submit()">Submit</button>
+            <span>{{submitMessage}}</span>
+        </div>
+
     </div>
 </div>

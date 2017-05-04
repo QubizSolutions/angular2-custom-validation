@@ -2,6 +2,7 @@ import { Component, forwardRef, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MyService } from '../../services/sample.service';
 import { InputGroup } from '../../models/input-group.model'
+import { Field } from '../../models/field.model'
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 @Component({
@@ -14,15 +15,14 @@ import 'rxjs/add/operator/distinctUntilChanged';
   `],
   template: `
     <div ngbDropdown [ngClass]="{ 'has-danger': errorMessage}">
-      <label class="form-control-label" [ngClass]="{'required_field': required}">{{label}}</label>
-      <button class="btn btn-outline-primary form-control" id="dropdownBasic1" [disabled]="disabled" ngbDropdownToggle>{{selectedItem ? selectedItem.name : "None"}}</button>
+      <label class="form-control-label" [ngClass]="{'required_field': validationObject.required}">{{validationObject.label}}</label>
+      <button class="btn btn-outline-primary form-control" id="dropdownBasic1" [disabled]="validationObject.disabled" ngbDropdownToggle>{{validationObject.value ? validationObject.value : "None"}}</button>
       <div class="dropdown-menu">
         <input
           id="searchDropdown" 
           type="text" 
           placeholder="Search..."
           [formControl]="controlSearch"
-          (ngModelChange)="searchByChangedTerm()"
           (click)="$event.stopPropagation()">
           
         <div class="dropdown-content" aria-labelledby="dropdownBasic1"
@@ -31,7 +31,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
               [infiniteScrollThrottle]="throttle"
               [scrollWindow]="false"
               (scrolled)="onScrollDown()">
-              <div class="dropdown-item series" *ngFor="let i of array" (click)="setSelected(i)">
+              <div class="dropdown-item series" *ngFor="let i of array" (click)="setSelected(i.name)">
                 {{ i.name }}
               </div>
         </div>
@@ -43,67 +43,56 @@ import 'rxjs/add/operator/distinctUntilChanged';
 })
 
 export class CustomDropdown extends InputGroup {
-  array: Array<any> = new Array<any>();
+  array: Array<string> = new Array<string>();
   throttle = 30;
   scrollDistance = 1;
   incrementPage: number = 1;
-  selectedItem: string;
+  // selectedItem: string;
   private errorMessage: string;
   searchTerm: string = "";
   controlSearch = new FormControl();
 
-  // Optional fields
-  @Input() required: boolean;
-  @Input() label: string;
-  @Input() disabled: boolean;
+  // Optional field
+  @Input() validationObject: Field;
 
   constructor(private dbProvider: MyService) {
     super();
     this.initialItemsLoad(this.searchTerm);
+    this.controlSearch.valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(term => {
+        this.incrementPage = 1;
+        return this.initialItemsLoad(term)
+      });
   }
 
   initialItemsLoad(term) {
     this.dbProvider
       .searchEntries(term, this.incrementPage)
-      .subscribe((data: Array<any>) => this.array = data);
-  }
-
-  searchByChangedTerm() {
-    this.incrementPage = 1;
-    this.controlSearch.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .subscribe(term => this.initialItemsLoad(term));
+      .subscribe((data: Array<string>) => this.array = data);
   }
 
   setSelected(selected: string) {
-    this.selectedItem = selected;
+    this.validationObject.value = selected;
     if (this.errorMessage) {
       this.errorMessage = undefined;
     }
   }
 
-  loadItems(term) {
+  loadItems() {
     this.dbProvider
-      .searchEntries(term, this.incrementPage)
-      .subscribe((data: Array<any>) => this.array = this.array.concat(data));
-  }
-
-  lazyLoadItems() {
-    if (this.controlSearch.value !== null) {
-      this.loadItems(this.controlSearch.value);
-    } else {
-      this.loadItems(this.searchTerm);
-    }
+      .searchEntries(this.controlSearch.value !== null ? this.controlSearch.value : "", this.incrementPage)
+      .subscribe((data: Array<string>) => this.array = this.array.concat(data));
   }
 
   onScrollDown() {
-    this.lazyLoadItems();
+    this.loadItems();
     this.incrementPage++;
   }
 
   forceValidation = function () {
-    if (this.required && this.selectedItem == undefined) {
+    if (this.validationObject.required && this.validationObject.value == undefined) {
       this.errorMessage = "Please select something";
       return false;
     }
