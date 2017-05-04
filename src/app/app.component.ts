@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ContentChildren, ViewChildren, QueryList, forwardRef } from '@angular/core';
+import { AfterViewInit, Component, ContentChildren, ViewChildren, QueryList, forwardRef, Input, EventEmitter, Output } from '@angular/core';
 import { ValidationMessages } from './services/validation-messages.service';
 import { Field } from './models/field.model';
 import { InputGroup } from './models/input-group.model';
@@ -7,6 +7,8 @@ import { CustomInput } from './components/custom-input/custom-input.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RadioItem } from './models/radio-item.model';
 import { RadioField } from './models/radio-field.model';
+import { Api } from './models/api.model';
+import { ApiField } from './models/api-field.model';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'my-app',
@@ -33,15 +35,17 @@ export class AppComponent {
         gender: new RadioField,
         accept: new RadioField,
         //...
-        favoritSerial: new Field
-        
+        favoritSerial: {
+            series: new ApiField,
+            movies: new ApiField
+        }
     };
 
     valid: boolean = false;
     submitMessage: string = '';
     lengthValidationEnabled: boolean;
     validationRule: Function;
-    
+
     private validationMessages: ValidationMessages;
     constructor(_validationMessages: ValidationMessages) {
 
@@ -73,7 +77,8 @@ export class AppComponent {
             }
             return errors;
         };
-        this.customForm.gender.disabled = false;
+        // Radio Components Options
+        this.customForm.gender.disabled = true;
         this.customForm.gender.required = true;
         this.customForm.gender.items = [new RadioItem(1, "gender", "Male"), new RadioItem(2, "gender", "Female")]
 
@@ -81,9 +86,15 @@ export class AppComponent {
         this.customForm.accept.required = true;
         this.customForm.accept.items = [new RadioItem(1, "accept", "Yes"), new RadioItem(2, "accept", "No"), new RadioItem(3, "accept", "Maybe")]
 
+        // Dropdown Components Options
+        this.customForm.favoritSerial.series.label = "Series";
+        this.customForm.favoritSerial.series.getapi = new Api("series");
+        this.customForm.favoritSerial.series.required = true;
 
-        this.customForm.favoritSerial.label = "Series";
-        this.customForm.favoritSerial.required = true
+        this.customForm.favoritSerial.movies.label = "Movies";
+        this.customForm.favoritSerial.movies.getapi = new Api("movies");
+        this.customForm.favoritSerial.movies.required = true;
+
         this.lengthValidationEnabled = true;
 
         //this.customForm.favoritSerial.disabled = true;
@@ -100,7 +111,6 @@ export class AppComponent {
             this.submitMessage = 'Not Valid'
         }
     }
-
     status() {
         this.customForm.nickName.disabled = !this.customForm.nickName.disabled
         // this.customForm.favoritSerial.disabled = !this.customForm.favoritSerial.disabled

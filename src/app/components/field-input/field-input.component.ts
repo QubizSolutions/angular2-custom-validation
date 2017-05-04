@@ -13,8 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         <input 
           type="text" 
           class="form-control form-control-danger form-control-success"
-          [disabled]="validationObject.disabled"
-          id="nickname" 
+          [disabled]="validationObject.disabled" 
           [value]="customText" 
           (input)="customText = $event.target.value">
         <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>

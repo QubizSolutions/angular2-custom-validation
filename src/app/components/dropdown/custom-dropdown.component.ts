@@ -1,8 +1,9 @@
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, Output, OnChanges, OnInit, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MyService } from '../../services/sample.service';
 import { InputGroup } from '../../models/input-group.model'
-import { Field } from '../../models/field.model'
+import { Field } from '../../models/field.model';
+import { ApiField } from '../../models/api-field.model';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 @Component({
@@ -42,7 +43,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
   providers: [{ provide: InputGroup, useExisting: forwardRef(() => CustomDropdown) }]
 })
 
-export class CustomDropdown extends InputGroup {
+export class CustomDropdown extends InputGroup implements OnInit {
   array: Array<string> = new Array<string>();
   throttle = 30;
   scrollDistance = 1;
@@ -53,10 +54,13 @@ export class CustomDropdown extends InputGroup {
   controlSearch = new FormControl();
 
   // Optional field
-  @Input() validationObject: Field;
+  @Input() validationObject: ApiField;
 
   constructor(private dbProvider: MyService) {
     super();
+  }
+
+  ngOnInit() {
     this.initialItemsLoad(this.searchTerm);
     this.controlSearch.valueChanges
       .debounceTime(400)
@@ -68,8 +72,9 @@ export class CustomDropdown extends InputGroup {
   }
 
   initialItemsLoad(term) {
+    console.log("initial items load");
     this.dbProvider
-      .searchEntries(term, this.incrementPage)
+      .searchEntries(term, this.incrementPage, this.validationObject.getapi.value)
       .subscribe((data: Array<string>) => this.array = data);
   }
 
@@ -82,7 +87,7 @@ export class CustomDropdown extends InputGroup {
 
   loadItems() {
     this.dbProvider
-      .searchEntries(this.controlSearch.value !== null ? this.controlSearch.value : "", this.incrementPage)
+      .searchEntries(this.controlSearch.value !== null ? this.controlSearch.value : "", this.incrementPage, this.validationObject.getapi.value)
       .subscribe((data: Array<string>) => this.array = this.array.concat(data));
   }
 

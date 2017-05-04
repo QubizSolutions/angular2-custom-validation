@@ -1,54 +1,52 @@
 <div class="col-md-12">
     <div class="row">
         <div class="col-6">
-            <custom-input [label]="customForm.firstName.label" [(customText)]="customForm.firstName.value" [validationRule]="customForm.firstName.customRule"
-                [required]="true">
-            </custom-input>
+            <field-input [validationObject]="customForm.firstName"></field-input>
         </div>
         <div class="col-6">
-            <custom-input [label]="customForm.lastName.label" [(customText)]="customForm.lastName.value" [validationRule]="customForm.lastName.customRule"
-                [required]="true">
-            </custom-input>
+            <field-input [validationObject]="customForm.lastName"></field-input>
         </div>
         <div class="col-6">
-            <custom-input [label]="customForm.occupation.label" [(customText)]="customForm.occupation.value" [validationRule]="customForm.occupation.customRule"
-                [required]="true">
-            </custom-input>
+            <field-input [validationObject]="customForm.occupation"></field-input>
         </div>
         <div class="col-6">
-            <custom-input [label]="customForm.nickName.label" [(customText)]="customForm.nickName.value" [validationRule]="customForm.nickName.customRule"
-                [required]="true" [disabled]="customForm.nickName.disabled">
-            </custom-input>
+             <field-input [validationObject]="customForm.nickName"></field-input>
         </div>
-        <div class="col-12">
-            <custom-dropdown [validationObject]="customForm.favoritSerial"></custom-dropdown>
-            <br>
-        </div>
-
         <div class="col-6">
-            <h5>Options</h5>
-            <input type="checkbox" [checked]="lengthValidationEnabled" (change)="lengthValidationEnabled = !lengthValidationEnabled"
-            />
-            <label for="">Length validation for First name enabled</label>
-            <br>
-            <input type="checkbox" [checked]="customForm.nickName.disabled" (change)="status()" />
-            <label for="">Enable/Disable Input </label>
-        </div>
-
-        <div class="col-6">
+            <h5>Please select gender:</h5>
             <custom-radio-group [validationObject]="customForm.gender"></custom-radio-group>
-            
-            <label>Selected gender: {{customForm.gender.value}}</label>
-            
         </div>
         <div class="col-6">
             <h5>Do you accept the terms?</h5>
             <custom-radio-group [validationObject]="customForm.accept"></custom-radio-group>
-            <label>Answer: {{customForm.accept.value}}</label>
         </div>
+        <div class="col-6">
+            <label>Selected gender: {{customForm.gender.value ? customForm.gender.value : 'None'}}</label>
+        </div>
+        <div class="col-6">
+            <label>Answer: {{customForm.accept.value ? customForm.accept.value : 'None'}}</label>
+        </div>
+        <div class="col-12">
+            <custom-dropdown [validationObject]="customForm.favoritSerial.series"></custom-dropdown>
+            <br>
+        </div>
+        <div class="col-12">
+            <custom-dropdown [validationObject]="customForm.favoritSerial.movies"></custom-dropdown>
+            <br>
+        </div>
+
         <div class="col-12">
             <button type="submit" class="btn btn-outline-primary" (click)="submit()">Submit</button>
             <span>{{submitMessage}}</span>
+        </div>
+        <div class="col-12">
+            <br>
+            <h5>Options:</h5>
+            <input type="checkbox" id="lengthValidation" [checked]="lengthValidationEnabled" (change)="lengthValidationEnabled = !lengthValidationEnabled" />
+            <label for="lengthValidation">Length validation for First name enabled</label>
+            <br>
+            <input type="checkbox" id="nickNameValdation" [checked]="customForm.nickName.disabled" (change)="status()" />
+            <label for="nickNameValdation">Enable/Disable Input </label>
         </div>
 
     </div>

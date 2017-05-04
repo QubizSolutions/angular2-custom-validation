@@ -158,5 +158,165 @@
         "name":"DC’s Legends Of Tomorrow "},
       {
         "name":"The Shannara Chronicles "}
+    ],
+     "movies":[
+      {
+        "name":"According to Jim "},
+      {
+        "name":"Avatar: The Last Airbender "},
+      {
+        "name":"Bones "},
+      {
+        "name":"Criminal Minds "},
+      {
+        "name":"Deadwood"},
+      {
+        "name":"Entourage "},
+      {
+        "name":"Family Guy"},
+      {
+        "name":"Friends "},
+      {
+        "name":"House "},
+      {
+        "name":"How I Met Your Mother "},
+      {
+        "name":"Justice League Unlimited "},
+      {
+        "name":"Married with Children "},
+      {
+        "name":"One Tree Hill "},
+      {
+        "name":"Prison Break "},
+      {
+        "name":"Smallville"},
+      {
+        "name":"Supernatural "},
+      {
+        "name":"Surface "},
+      {
+        "name":"The King of Queens "},
+      {
+        "name":"The Simpsons "},
+      {
+        "name":"Two and a Half Men "},
+      {
+        "name":"Weeds "},
+      {
+        "name":"Torchwood "},
+      {
+        "name":"Dexter"},
+      {
+        "name":"Heroes "},
+      {
+        "name":"The Big Bang Theory "},
+      {
+        "name":"Misfits "},
+      {
+        "name":"Kyle XY "},
+      {
+        "name":"True Blood "},
+      {
+        "name":"Skins "},
+      {
+        "name":"Californication "},
+      {
+        "name":"Chuck"},
+      {
+        "name":"Reaper "},
+      {
+        "name":"GREEK "},
+      {
+        "name":"Fringe "},
+      {
+        "name":"The Mentalist "},
+      {
+        "name":"Castle"},
+      {
+        "name":"Lie to Me "},
+      {
+        "name":"White Collar "},
+      {
+        "name":"FlashForward "},
+      {
+        "name":"The Vampire Diaries "},
+      {
+        "name":"Spartacus "},
+      {
+        "name":"Modern Family "},
+      {
+        "name":"Cougar Town "},
+      {
+        "name":"Sons of Tucson "},
+      {
+        "name":"Sherlock"},
+      {
+        "name":"Justified "},
+      {
+        "name":"Workaholics "},
+      {
+        "name":"Game of Thrones "},
+      {
+        "name":"The Walking Dead"},
+      {
+        "name":"Young Justice "},
+      {
+        "name":"Raising Hope "},
+      {
+        "name":"Under the Dome "},
+      {
+        "name":"Falling Skies "},
+      {
+        "name":"The Legend of Korra "},
+      {
+        "name":"Grimm"},
+      {
+        "name":"Once Upon a Time "},
+      {
+        "name":"American Horror Story "},
+      {
+        "name":"Anger Management "},
+      {
+        "name":"Arrow "},
+      {
+        "name":"Elementary "},
+      {
+        "name":"Go On "},
+      {
+        "name":"Banshee"},
+      {
+        "name":"Hannibal"},
+      {
+        "name":"Bad Education"},
+      {
+        "name":"Marvel's Agents of S.H.I.E.L.D. "},
+      {
+        "name":"Da Vinci's Demons "},
+      {
+        "name":"Silicon Valley "},
+      {
+        "name":"The 100 "},
+      {
+        "name":"Almost Human "},
+      {
+        "name":"Brooklyn Nine-Nine "},
+      {
+        "name":"The Flash (2014) "},
+      {
+        "name":"Gotham"},
+      {
+        "name":"Constantine"},
+      {
+        "name":"Daredevil "},
+      {
+        "name":"iZombie"},
+      {
+        "name":"The Messengers"},
+      {
+        "name":"Scorpion"},
+      {
+        "name":"DC’s Legends Of Tomorrow "},
+      {
+        "name":"The Shannara Chronicles "}
     ] 
 }

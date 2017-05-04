@@ -8,18 +8,16 @@ import { RadioField } from '../../models/radio-field.model';
   selector: 'custom-radio-group',
   template: `
     <div *ngFor="let item of validationObject.items">
-      <label for="gender">
-        <input type="radio" class="gender" [name]="item.name"
-        [disabled]="validationObject.disabled" (change)="choice(item.value)">
-        {{item.value}}
-      </label>
+      <input type="radio" [name]="item.name" id="{{item.value}}"
+      [disabled]="validationObject.disabled" (change)="choice(item.value)">
+      <label for="{{item.value}}">{{item.value}}</label>
     </div>
     <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>
     `,
   providers: [{ provide: InputGroup, useExisting: forwardRef(() => CustomRadioGroup) }]
 })
 
-export class CustomRadioGroup extends InputGroup{
+export class CustomRadioGroup extends InputGroup {
 
   private errorMessage: string;
   private validationMessages: ValidationMessages;
@@ -41,7 +39,7 @@ export class CustomRadioGroup extends InputGroup{
   }
 
   forceValidation = function () {
-    if (this.validationObject.required && this.validationObject.value == undefined) {
+    if (this.validationObject.required && this.validationObject.value == undefined && !this.validationObject.disabled) {
       this.errorMessage = "Please select something";
       return false;
     }

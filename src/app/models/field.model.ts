@@ -1,8 +1,8 @@
 import { RadioItem } from './radio-item.model';
 
 export class Field {
-    label: String;
-    value: String;
+    label: string;
+    value: string;
     customRuleFirst: Boolean;
     customRule: Function;
     required: Boolean;
