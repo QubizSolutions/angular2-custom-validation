@@ -4,34 +4,42 @@ import { Field } from '../../models/field.model';
 import { InputGroup } from '../../models/input-group.model';
 import { RadioItem } from '../../models/radio-item.model';
 import { RadioField } from '../../models/radio-field.model';
+
 @Component({
   selector: 'custom-radio-group',
   template: `
-    <div *ngFor="let item of validationObject.items">
-      <input type="radio" [name]="item.name" id="{{item.value}}"
-      [disabled]="validationObject.disabled" (change)="choice(item.value)">
-      <label for="{{item.value}}">{{item.value}}</label>
-    </div>
-    <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>
+      <h5 [ngClass]="{'required_field': validationObject.required}">{{validationObject.title}}</h5>
+      <div *ngFor="let item of validationObject.items">
+          <label>
+            <input type="radio" [name]="validationObject.radioButtonIdentifier"
+            [disabled]="validationObject.disabled" (change)="choice(item.value)">
+            <span [ngClass]="{'error': errorMessage}">{{item.value}}</span>
+          </label>
+      </div>
+      <div class="has-error">{{errorMessage}}</div>
     `,
   providers: [{ provide: InputGroup, useExisting: forwardRef(() => CustomRadioGroup) }]
 })
 
 export class CustomRadioGroup extends InputGroup {
-
-  private errorMessage: string;
-  private validationMessages: ValidationMessages;
-
   constructor(_validationMessages: ValidationMessages) {
     super();
     this.errorMessage = "";
     this.validationMessages = _validationMessages;
   }
 
-  // Optional fields
   @Input() validationObject: RadioField;
+  
+  private errorMessage: string;
+  private validationMessages: ValidationMessages;
+
+  // Methods
 
   choice(value: string) {
+    if (this.validationObject.changeDesign != undefined) {
+      this.validationObject.changeDesign(value);
+    }
+    
     this.validationObject.value = value;
     if (this.errorMessage) {
       this.errorMessage = undefined;

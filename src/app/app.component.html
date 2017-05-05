@@ -13,25 +13,39 @@
              <field-input [validationObject]="customForm.nickName"></field-input>
         </div>
         <div class="col-6">
-            <h5>Please select gender:</h5>
             <custom-radio-group [validationObject]="customForm.gender"></custom-radio-group>
         </div>
         <div class="col-6">
-            <h5>Do you accept the terms?</h5>
             <custom-radio-group [validationObject]="customForm.accept"></custom-radio-group>
         </div>
         <div class="col-6">
-            <label>Selected gender: {{customForm.gender.value ? customForm.gender.value : 'None'}}</label>
-        </div>
-        <div class="col-6">
-            <label>Answer: {{customForm.accept.value ? customForm.accept.value : 'None'}}</label>
-        </div>
-        <div class="col-12">
-            <custom-dropdown [validationObject]="customForm.favoritSerial.series"></custom-dropdown>
+            <div>Selected gender: {{customForm.gender.value ? customForm.gender.value : 'None'}}</div>
             <br>
         </div>
-        <div class="col-12">
-            <custom-dropdown [validationObject]="customForm.favoritSerial.movies"></custom-dropdown>
+        <div class="col-6">
+            <div>Answer: {{customForm.accept.value ? customForm.accept.value : 'None'}}</div>
+            <br>
+        </div>
+        <div class="col-6">
+            <custom-radio-group [validationObject]="customForm.changeLayout"></custom-radio-group>
+        </div>
+        <div class="col-6">
+            <custom-radio-group [validationObject]="customForm.doSomethingElse"></custom-radio-group>
+        </div>
+         <div class="col-6">
+             <div>Value: {{customForm.changeLayout.value ? customForm.changeLayout.value : 'None'}}</div>
+             <br>
+        </div>
+        <div class="col-6">
+            <div>Value: {{customForm.doSomethingElse.value ? customForm.doSomethingElse.value : 'None'}}</div>
+            <br>
+        </div>
+        <div class="col-6">
+            <custom-dropdown [validationObject]="customForm.dropdownItems.series"></custom-dropdown>
+            <br>
+        </div>
+        <div class="col-6">
+            <custom-dropdown [validationObject]="customForm.dropdownItems.movies"></custom-dropdown>
             <br>
         </div>
 

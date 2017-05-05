@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MyService } from '../../services/sample.service';
 import { InputGroup } from '../../models/input-group.model'
 import { Field } from '../../models/field.model';
-import { ApiField } from '../../models/api-field.model';
+import { DropdownField } from '../../models/dropdown-field.model';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 @Component({
@@ -37,28 +37,28 @@ import 'rxjs/add/operator/distinctUntilChanged';
               </div>
         </div>
       </div>
-      <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>
     </div>
+    <div class="error_msg form-control-feedback">{{errorMessage}}</div>
   `,
   providers: [{ provide: InputGroup, useExisting: forwardRef(() => CustomDropdown) }]
 })
 
 export class CustomDropdown extends InputGroup implements OnInit {
+   constructor(private dbProvider: MyService) {
+    super();
+  }
+  
   array: Array<string> = new Array<string>();
   throttle = 30;
   scrollDistance = 1;
   incrementPage: number = 1;
-  // selectedItem: string;
-  private errorMessage: string;
   searchTerm: string = "";
   controlSearch = new FormControl();
 
-  // Optional field
-  @Input() validationObject: ApiField;
+  private errorMessage: string;
 
-  constructor(private dbProvider: MyService) {
-    super();
-  }
+  // Optional field
+  @Input() validationObject: DropdownField;
 
   ngOnInit() {
     this.initialItemsLoad(this.searchTerm);
@@ -71,10 +71,12 @@ export class CustomDropdown extends InputGroup implements OnInit {
       });
   }
 
+  // Methods
+  
   initialItemsLoad(term) {
     console.log("initial items load");
     this.dbProvider
-      .searchEntries(term, this.incrementPage, this.validationObject.getapi.value)
+      .searchEntries(term, this.incrementPage, this.validationObject.dropdownItem)
       .subscribe((data: Array<string>) => this.array = data);
   }
 
@@ -87,7 +89,7 @@ export class CustomDropdown extends InputGroup implements OnInit {
 
   loadItems() {
     this.dbProvider
-      .searchEntries(this.controlSearch.value !== null ? this.controlSearch.value : "", this.incrementPage, this.validationObject.getapi.value)
+      .searchEntries(this.controlSearch.value !== null ? this.controlSearch.value : "", this.incrementPage, this.validationObject.dropdownItem)
       .subscribe((data: Array<string>) => this.array = this.array.concat(data));
   }
 

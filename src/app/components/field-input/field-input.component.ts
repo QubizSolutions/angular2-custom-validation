@@ -8,7 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'field-input',
   template: `
-      <div class="form-group" [ngClass]="{ 'has-danger': errorMessage && myPrivateValue != undefined, 'has-success': !errorMessage && myPrivateValue != undefined}">
+      <div class="form-group" [ngClass]="{ 'has-danger': errorMessage && myPrivateValue !== undefined, 'has-success': !errorMessage && myPrivateValue !== undefined && myPrivateValue !== emptyString && !validationObject.disabled}">
         <label class="form-control-label" [ngClass]="{'required_field': validationObject.required}" *ngIf="validationObject.label" for="nickname" >{{validationObject.label}}</label>
         <input 
           type="text" 
@@ -16,24 +16,24 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
           [disabled]="validationObject.disabled" 
           [value]="customText" 
           (input)="customText = $event.target.value">
-        <div *ngIf="errorMessage" class="form-control-feedback">{{errorMessage}}</div>
+        <div class="error_msg form-control-feedback">{{errorMessage}}</div>
       </div>
       `,
   providers: [{ provide: InputGroup, useExisting: forwardRef(() => FieldInput) }]
-
 })
 
 export class FieldInput extends InputGroup {
-
-  private errorMessage: string;
-  private validationMessages: ValidationMessages;
   constructor(_validationMessages: ValidationMessages) {
     super();
     this.errorMessage = "";
     this.validationMessages = _validationMessages;
   }
 
+  private errorMessage: string;
+  private validationMessages: ValidationMessages;
+  private emptyString: string = "";
   private myPrivateValue: string;
+
   @Input() validationObject: Field;
 
   // customText getter
@@ -48,7 +48,7 @@ export class FieldInput extends InputGroup {
   set customText(val: string) {
     this.myPrivateValue = val;
     var errors = new Array<string>();
-    if (this.validationObject.required) {
+    if (this.validationObject.required && !this.validationObject.disabled) {
       this.validationMessages.IsRequired(val, errors);
     }
 
@@ -64,6 +64,8 @@ export class FieldInput extends InputGroup {
       this.errorMessage = "";
     }
   }
+
+  // Methods
 
   forceValidation = function () {
     if (this.myPrivateValue == undefined) {

@@ -7,26 +7,14 @@ import { CustomInput } from './components/custom-input/custom-input.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RadioItem } from './models/radio-item.model';
 import { RadioField } from './models/radio-field.model';
-import { Api } from './models/api.model';
-import { ApiField } from './models/api-field.model';
+import { DropdownField } from './models/dropdown-field.model';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'my-app',
-    templateUrl: './app/app.component.html',
-    styles: [`
-    .dropdown-content {
-      max-height: 200px;
-      overflow: auto;
-    }
-  `],
+    templateUrl: './app/app.component.html'
 })
 export class AppComponent {
     @ViewChildren(forwardRef(() => InputGroup)) allInputItems: QueryList<InputGroup>;
-
-    ngAfterViewInit() {
-        console.info(this.allInputItems);
-    }
-
     customForm = {
         firstName: new Field,
         lastName: new Field,
@@ -34,10 +22,12 @@ export class AppComponent {
         nickName: new Field,
         gender: new RadioField,
         accept: new RadioField,
+        changeLayout: new RadioField,
+        doSomethingElse: new RadioField,
         //...
-        favoritSerial: {
-            series: new ApiField,
-            movies: new ApiField
+        dropdownItems: {
+            series: new DropdownField,
+            movies: new DropdownField
         }
     };
 
@@ -51,6 +41,10 @@ export class AppComponent {
 
         this.validationMessages = _validationMessages;
         var _this = this;
+
+        // Field Input Options
+
+        // First name
         this.customForm.firstName.label = "First name"
         this.customForm.firstName.required = true;
         this.customForm.firstName.customRule = function (value: string) {
@@ -59,14 +53,20 @@ export class AppComponent {
                 if (_this.lengthValidationEnabled) {
                     _this.validationMessages.MaxLength(8, value, errors);
                 }
-
                 _this.validationMessages.MinLength(3, value, errors);
             }
             return errors;
         }
-        this.customForm.lastName.label = "Last name";
-        this.customForm.occupation.label = "Occupation";
 
+        // Last name
+        this.customForm.lastName.label = "Last name";
+        this.customForm.lastName.required = true;
+
+        // Occupation
+        this.customForm.occupation.label = "Occupation";
+        this.customForm.occupation.required = true;
+
+        // Nick name
         this.customForm.nickName.label = "Nick name";
         this.customForm.nickName.required = true;
         this.customForm.nickName.disabled = true;
@@ -77,30 +77,76 @@ export class AppComponent {
             }
             return errors;
         };
+
         // Radio Components Options
+
+        // Gender
+        this.customForm.gender.title = "Please select gender:";
+        this.customForm.gender.radioButtonIdentifier = 'gender';
         this.customForm.gender.disabled = true;
         this.customForm.gender.required = true;
-        this.customForm.gender.items = [new RadioItem(1, "gender", "Male"), new RadioItem(2, "gender", "Female")]
+        this.customForm.gender.items = [
+            new RadioItem(1, "Male"), 
+            new RadioItem(2, "Female")
+        ]
 
+        // Accept
+        this.customForm.accept.title = "Do you accept the terms?";
+        this.customForm.accept.radioButtonIdentifier = 'accept';
         this.customForm.accept.disabled = false;
         this.customForm.accept.required = true;
-        this.customForm.accept.items = [new RadioItem(1, "accept", "Yes"), new RadioItem(2, "accept", "No"), new RadioItem(3, "accept", "Maybe")]
+        this.customForm.accept.items = [
+            new RadioItem(1, "Yes"), 
+            new RadioItem(2, "No"), 
+            new RadioItem(3, "Maybe")
+        ]
+
+        // changeLayout
+        this.customForm.changeLayout.title = "Execute a function:";
+        this.customForm.changeLayout.radioButtonIdentifier = 'changeLayout';
+        this.customForm.changeLayout.disabled = false;
+        this.customForm.changeLayout.required = true;
+        this.customForm.changeLayout.items = [
+            new RadioItem(1, "Do something"),
+            new RadioItem(2, "Do something else")
+        ];
+        this.customForm.changeLayout.changeDesign = function (value) {
+            console.log(value);
+        }
+
+        // doSomethingElse
+        this.customForm.doSomethingElse.title = "Execute another function:";
+        this.customForm.doSomethingElse.radioButtonIdentifier = 'doSomethingElse';
+        this.customForm.doSomethingElse.disabled = false;
+        this.customForm.doSomethingElse.required = true;
+        this.customForm.doSomethingElse.items = [
+            new RadioItem(1, "Do something"),
+            new RadioItem(2, "Do something else")
+        ];
+        this.customForm.doSomethingElse.changeDesign = function (value) {
+            console.log(value);
+        }
 
         // Dropdown Components Options
-        this.customForm.favoritSerial.series.label = "Series";
-        this.customForm.favoritSerial.series.getapi = new Api("series");
-        this.customForm.favoritSerial.series.required = true;
 
-        this.customForm.favoritSerial.movies.label = "Movies";
-        this.customForm.favoritSerial.movies.getapi = new Api("movies");
-        this.customForm.favoritSerial.movies.required = true;
+        // Series
+        this.customForm.dropdownItems.series.label = "Series";
+        this.customForm.dropdownItems.series.dropdownItem = "series";
+        this.customForm.dropdownItems.series.required = true;
 
+        // Movies
+        this.customForm.dropdownItems.movies.label = "Movies";
+        this.customForm.dropdownItems.movies.dropdownItem = "movies";
+        this.customForm.dropdownItems.movies.required = true;
+
+        // Validation Options
+
+        // Field min/max value length
         this.lengthValidationEnabled = true;
-
-        //this.customForm.favoritSerial.disabled = true;
-        
     }
 
+    // Methods
+    
     submit = function () {
         var allValid = true;
         this.allInputItems.forEach(inputInstance => allValid = inputInstance.forceValidation() && allValid)
@@ -111,8 +157,9 @@ export class AppComponent {
             this.submitMessage = 'Not Valid'
         }
     }
+
+    // Enable/Disable specific fields
     status() {
         this.customForm.nickName.disabled = !this.customForm.nickName.disabled
-        // this.customForm.favoritSerial.disabled = !this.customForm.favoritSerial.disabled
     }
 }

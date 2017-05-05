@@ -10,9 +10,27 @@
     width: 100%;
     padding: 5px;
 }
+
+.dropdown-content {
+    max-height: 200px;
+    overflow: auto;
+}
+
 .dropdown-menu {
     width: 100%;
     border-top: 0px;
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
 }
+.error {
+    color: #D9534F;
+}
+
+.success { 
+    color: #5CB85C;
+}
+.error_msg {
+    height: 20px;
+    color: #D9534F;
+}
+
