@@ -41,6 +41,13 @@
             <br>
         </div>
         <div class="col-6">
+            <custom-checkbox-group [validationObject]="customForm.favoriteFood"></custom-checkbox-group>
+        </div>
+        <div class="col-6">
+            <div>Value: {{customForm.favoriteFood.value ? customForm.favoriteFood.value : 'None'}}</div>
+            <br>
+        </div>
+        <div class="col-6">
             <custom-dropdown [validationObject]="customForm.dropdownItems.series"></custom-dropdown>
             <br>
         </div>

@@ -7,6 +7,8 @@ import { CustomInput } from './components/custom-input/custom-input.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RadioItem } from './models/radio-item.model';
 import { RadioField } from './models/radio-field.model';
+import { CheckboxItem } from './models/checkbox-item.model';
+import { CheckboxField } from './models/checkbox-field.model';
 import { DropdownField } from './models/dropdown-field.model';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
@@ -24,6 +26,8 @@ export class AppComponent {
         accept: new RadioField,
         changeLayout: new RadioField,
         doSomethingElse: new RadioField,
+        favoriteFood: new CheckboxField,
+
         //...
         dropdownItems: {
             series: new DropdownField,
@@ -126,6 +130,17 @@ export class AppComponent {
         this.customForm.doSomethingElse.changeDesign = function (value) {
             console.log(value);
         }
+
+        // Checkbox Components Options
+        this.customForm.favoriteFood.title = "Pick your favorite food: ";
+        this.customForm.favoriteFood.disabled = false;
+        this.customForm.favoriteFood.required = true;
+        this.customForm.favoriteFood.items = [
+            new CheckboxItem(1, "Pizza"),
+            new CheckboxItem(2, "Hamburger"),
+            new CheckboxItem(3, "Pasta")
+        ]
+        
 
         // Dropdown Components Options
 
