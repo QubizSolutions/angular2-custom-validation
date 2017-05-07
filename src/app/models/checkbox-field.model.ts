@@ -4,5 +4,6 @@ import { CheckboxItem } from './checkbox-item.model';
 export class CheckboxField extends Field {
     title: string;
     items: Array<CheckboxItem>;
+    checkedItems: Array<string>;
     changeDesign: Function;
 }

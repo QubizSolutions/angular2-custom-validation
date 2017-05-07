@@ -30,21 +30,20 @@
             <custom-radio-group [validationObject]="customForm.changeLayout"></custom-radio-group>
         </div>
         <div class="col-6">
-            <custom-radio-group [validationObject]="customForm.doSomethingElse"></custom-radio-group>
+            <custom-checkbox-group [validationObject]="customForm.favoriteFood"></custom-checkbox-group>
+             
         </div>
-         <div class="col-6">
+        <div class="col-6">
              <div>Value: {{customForm.changeLayout.value ? customForm.changeLayout.value : 'None'}}</div>
              <br>
         </div>
         <div class="col-6">
-            <div>Value: {{customForm.doSomethingElse.value ? customForm.doSomethingElse.value : 'None'}}</div>
-            <br>
-        </div>
-        <div class="col-6">
-            <custom-checkbox-group [validationObject]="customForm.favoriteFood"></custom-checkbox-group>
-        </div>
-        <div class="col-6">
-            <div>Value: {{customForm.favoriteFood.value ? customForm.favoriteFood.value : 'None'}}</div>
+            Choices:
+            <ol>
+                <li *ngFor="let i of customForm.favoriteFood.checkedItems">
+                    {{ i }}
+                </li>
+            </ol>
             <br>
         </div>
         <div class="col-6">

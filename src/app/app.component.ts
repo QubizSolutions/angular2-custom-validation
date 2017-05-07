@@ -25,7 +25,6 @@ export class AppComponent {
         gender: new RadioField,
         accept: new RadioField,
         changeLayout: new RadioField,
-        doSomethingElse: new RadioField,
         favoriteFood: new CheckboxField,
 
         //...
@@ -118,27 +117,14 @@ export class AppComponent {
             console.log(value);
         }
 
-        // doSomethingElse
-        this.customForm.doSomethingElse.title = "Execute another function:";
-        this.customForm.doSomethingElse.radioButtonIdentifier = 'doSomethingElse';
-        this.customForm.doSomethingElse.disabled = false;
-        this.customForm.doSomethingElse.required = true;
-        this.customForm.doSomethingElse.items = [
-            new RadioItem(1, "Do something"),
-            new RadioItem(2, "Do something else")
-        ];
-        this.customForm.doSomethingElse.changeDesign = function (value) {
-            console.log(value);
-        }
-
         // Checkbox Components Options
         this.customForm.favoriteFood.title = "Pick your favorite food: ";
         this.customForm.favoriteFood.disabled = false;
         this.customForm.favoriteFood.required = true;
         this.customForm.favoriteFood.items = [
-            new CheckboxItem(1, "Pizza"),
-            new CheckboxItem(2, "Hamburger"),
-            new CheckboxItem(3, "Pasta")
+            new CheckboxItem(1, true, "Pizza"),
+            new CheckboxItem(2, false, "Hamburger"),
+            new CheckboxItem(3, false, "Pasta")
         ]
         
 

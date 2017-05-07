@@ -16,7 +16,7 @@ import { RadioField } from '../../models/radio-field.model';
             <span [ngClass]="{'error': errorMessage}">{{item.value}}</span>
           </label>
       </div>
-      <div class="has-error">{{errorMessage}}</div>
+      <div class="error">{{errorMessage}}</div>
     `,
   providers: [{ provide: InputGroup, useExisting: forwardRef(() => CustomRadioGroup) }]
 })
