@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef, OnInit } from '@angular/core';
 import { ValidationMessages } from '../../services/validation-messages.service'
 import { Field } from '../../models/field.model'
 import { InputGroup } from '../../models/input-group.model'
@@ -15,22 +15,26 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
           class="form-control form-control-danger form-control-success"
           [disabled]="validationObject.disabled" 
           [value]="customText" 
-          (input)="customText = $event.target.value">
-        <div class="error_msg form-control-feedback">{{errorMessage}}</div>
+          (input)="customText = $event.target.value"
+          (blur)="storeValue($event)">
+        <div class="form-control-feedback" [ngClass]="{ 'error_msg': errorMessage}">{{errorMessage}}</div>
       </div>
       `,
   providers: [{ provide: InputGroup, useExisting: forwardRef(() => FieldInput) }]
 })
 
-export class FieldInput extends InputGroup {
+export class FieldInput extends InputGroup implements OnInit {
+
+  private errorMessage: string;
+  private validationMessages: ValidationMessages;
+
   constructor(_validationMessages: ValidationMessages) {
     super();
     this.errorMessage = "";
     this.validationMessages = _validationMessages;
   }
 
-  private errorMessage: string;
-  private validationMessages: ValidationMessages;
+  
   private emptyString: string = "";
   private myPrivateValue: string;
 
@@ -65,10 +69,25 @@ export class FieldInput extends InputGroup {
     }
   }
 
+  ngOnInit() {
+    if (localStorage.getItem(this.validationObject.label)) {
+      let inputValue = localStorage.getItem(this.validationObject.label);
+      this.myPrivateValue = inputValue;
+    }
+  }
+
   // Methods
 
+  storeValue(event) {
+    let elem = event.target;
+    let val = event.target.value.trim();
+    if (val !== '' && !this.errorMessage){
+      localStorage.setItem(this.validationObject.label, val);
+    }
+  }
+
   forceValidation = function () {
-    if (this.myPrivateValue == undefined) {
+    if (this.myPrivateValue == undefined && !this.validationObject.disabled) {
       this.myPrivateValue = "";
     }
     this.customText = this.myPrivateValue;

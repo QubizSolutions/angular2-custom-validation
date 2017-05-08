@@ -74,7 +74,6 @@ export class CustomDropdown extends InputGroup implements OnInit {
   // Methods
   
   initialItemsLoad(term) {
-    console.log("initial items load");
     this.dbProvider
       .searchEntries(term, this.incrementPage, this.validationObject.dropdownItem)
       .subscribe((data: Array<string>) => this.array = data);

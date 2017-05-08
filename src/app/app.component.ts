@@ -75,7 +75,7 @@ export class AppComponent {
         this.customForm.nickName.disabled = true;
         this.customForm.nickName.customRule = function (value: string) {
             var errors = new Array<string>();
-            if (_this.customForm.firstName.value != undefined && !_this.customForm.firstName.value.startsWith(value)) {
+            if (_this.customForm.firstName.value !== undefined && !_this.customForm.firstName.value.startsWith(value)) {
                 errors.push("Fake nickname");
             }
             return errors;
@@ -89,8 +89,8 @@ export class AppComponent {
         this.customForm.gender.disabled = true;
         this.customForm.gender.required = true;
         this.customForm.gender.items = [
-            new RadioItem(1, "Male"), 
-            new RadioItem(2, "Female")
+            new RadioItem(1, "Male", false), 
+            new RadioItem(2, "Female", false)
         ]
 
         // Accept
@@ -99,9 +99,9 @@ export class AppComponent {
         this.customForm.accept.disabled = false;
         this.customForm.accept.required = true;
         this.customForm.accept.items = [
-            new RadioItem(1, "Yes"), 
-            new RadioItem(2, "No"), 
-            new RadioItem(3, "Maybe")
+            new RadioItem(1, "Yes", false), 
+            new RadioItem(2, "No", false), 
+            new RadioItem(3, "Maybe", false)
         ]
 
         // changeLayout
@@ -110,8 +110,8 @@ export class AppComponent {
         this.customForm.changeLayout.disabled = false;
         this.customForm.changeLayout.required = true;
         this.customForm.changeLayout.items = [
-            new RadioItem(1, "Do something"),
-            new RadioItem(2, "Do something else")
+            new RadioItem(1, "Do something", false),
+            new RadioItem(2, "Do something else", false)
         ];
         this.customForm.changeLayout.changeDesign = function (value) {
             console.log(value);
@@ -122,7 +122,7 @@ export class AppComponent {
         this.customForm.favoriteFood.disabled = false;
         this.customForm.favoriteFood.required = true;
         this.customForm.favoriteFood.items = [
-            new CheckboxItem(1, true, "Pizza"),
+            new CheckboxItem(1, false, "Pizza"),
             new CheckboxItem(2, false, "Hamburger"),
             new CheckboxItem(3, false, "Pasta")
         ]
@@ -154,6 +154,7 @@ export class AppComponent {
         this.valid = allValid;
         if (this.valid) {
             this.submitMessage = 'Valid'
+            localStorage.clear();
         } else {
             this.submitMessage = 'Not Valid'
         }

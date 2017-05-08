@@ -33,6 +33,11 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
   }
 
   ngOnInit() {
+    this.validationObject.items.forEach((item) => {
+      if (localStorage.getItem(item.val) == 'checked'){
+        item.checked = true;
+      }
+    })
     this.validationObject.items.map( (item) => {
       if (item.checked) {
         this.pickedItems.push(item.val);
@@ -51,14 +56,14 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
   choice(event, item: string) {
     if (event.target.checked) {
       this.pickedItems.push(item);
+      localStorage.setItem(item, 'checked');
     } else {
       let itemNo = this.pickedItems.indexOf(item);
+      localStorage.removeItem(item)
       if (itemNo !== -1) {
         this.pickedItems.splice(itemNo, 1);
       }
     }
-
-    this.pickedItems.join(',');
     this.validationObject.checkedItems = this.pickedItems;
 
     if (this.errorMessage) {
@@ -70,8 +75,8 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
     if (
       this.validationObject.required &&
       this.validationObject.value == undefined && 
-      !this.validationObject.disabled && 
-      this.validationObject.checkedItems.length < 1
+      !this.validationObject.disabled &&
+      this.validationObject.checkedItems == undefined
     ) {
       this.errorMessage = "Please select something";
       return false;
