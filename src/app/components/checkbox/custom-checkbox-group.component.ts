@@ -34,14 +34,12 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
 
   ngOnInit() {
     this.validationObject.items.forEach((item) => {
-      if (localStorage.getItem(item.val) == 'checked'){
+      if (localStorage.getItem(this.validationObject.title + ' ' + item.val) == 'checked'){
         item.checked = true;
-      }
-    })
-    this.validationObject.items.map( (item) => {
-      if (item.checked) {
-        this.pickedItems.push(item.val);
-        this.validationObject.checkedItems = this.pickedItems;
+        if (item.checked) {
+          this.pickedItems.push(item.val);
+          this.validationObject.checkedItems = this.pickedItems;
+        }
       }
     })
   }
@@ -54,12 +52,13 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
   // Methods
 
   choice(event, item: string) {
+    let localKey = this.validationObject.title + ' ' + item;
     if (event.target.checked) {
       this.pickedItems.push(item);
-      localStorage.setItem(item, 'checked');
+      localStorage.setItem(localKey, 'checked');
     } else {
       let itemNo = this.pickedItems.indexOf(item);
-      localStorage.removeItem(item)
+      localStorage.removeItem(localKey)
       if (itemNo !== -1) {
         this.pickedItems.splice(itemNo, 1);
       }

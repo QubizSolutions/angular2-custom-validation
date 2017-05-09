@@ -47,11 +47,13 @@ export class CustomRadioGroup extends InputGroup implements OnInit {
   // Methods
 
   choice(value: string) {
+     
     this.validationObject.items.forEach((item) => {
         if (value == item.value){
           item.checked = true;
           if (item.checked == true) {
-            localStorage.setItem(item.value, 'checked');
+            let localKey = this.validationObject.radioButtonIdentifier + '.' + item.value
+            localStorage.setItem(localKey, 'checked');
           }
         } else {
            item.checked = false;

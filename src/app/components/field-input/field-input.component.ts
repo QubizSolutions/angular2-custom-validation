@@ -56,7 +56,7 @@ export class FieldInput extends InputGroup implements OnInit {
       this.validationMessages.IsRequired(val, errors);
     }
 
-    if (this.validationObject.customRule != undefined) {
+    if (this.validationObject.customRule != undefined && !this.validationObject.disabled) {
       errors = errors.concat(this.validationObject.customRule(val));
     }
 

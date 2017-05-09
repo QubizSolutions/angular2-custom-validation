@@ -69,6 +69,10 @@ export class CustomDropdown extends InputGroup implements OnInit {
         this.incrementPage = 1;
         return this.initialItemsLoad(term)
       });
+      if (localStorage.getItem(this.validationObject.label)){
+        let lsDropdownValue = localStorage.getItem(this.validationObject.label);
+        this.setSelected(lsDropdownValue);
+      }
   }
 
   // Methods
@@ -81,6 +85,9 @@ export class CustomDropdown extends InputGroup implements OnInit {
 
   setSelected(selected: string) {
     this.validationObject.value = selected;
+    if (this.validationObject.value !== null) {
+      localStorage.setItem(this.validationObject.label, this.validationObject.value)
+    }
     if (this.errorMessage) {
       this.errorMessage = undefined;
     }
