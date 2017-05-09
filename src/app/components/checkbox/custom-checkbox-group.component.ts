@@ -4,6 +4,7 @@ import { Field } from '../../models/field.model';
 import { InputGroup } from '../../models/input-group.model';
 import { CheckboxItem } from '../../models/checkbox-item.model';
 import { CheckboxField } from '../../models/checkbox-field.model';
+import { LocalStorageStatus } from '../../services/local-storage-status.service';
 
 @Component({
   selector: 'custom-checkbox-group',
@@ -25,7 +26,7 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
 
   pickedItems: Array<string>;
 
-  constructor(_validationMessages: ValidationMessages) {
+  constructor(_validationMessages: ValidationMessages, private lStorage: LocalStorageStatus) {
     super();
     this.errorMessage = "";
     this.validationMessages = _validationMessages;
@@ -33,15 +34,17 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
   }
 
   ngOnInit() {
-    this.validationObject.items.forEach((item) => {
-      if (localStorage.getItem(this.validationObject.title + ' ' + item.val) == 'checked'){
-        item.checked = true;
-        if (item.checked) {
-          this.pickedItems.push(item.val);
-          this.validationObject.checkedItems = this.pickedItems;
+    if (this.lStorage.localStorageStatus) {
+      this.validationObject.items.forEach((item) => {
+        if (localStorage.getItem(this.validationObject.title + ' ' + item.val) == 'checked'){
+          item.checked = true;
+          if (item.checked) {
+            this.pickedItems.push(item.val);
+            this.validationObject.checkedItems = this.pickedItems;
+          }
         }
-      }
-    })
+      })
+    }
   }
 
   @Input() validationObject: CheckboxField;
@@ -55,10 +58,10 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
     let localKey = this.validationObject.title + ' ' + item;
     if (event.target.checked) {
       this.pickedItems.push(item);
-      localStorage.setItem(localKey, 'checked');
+      this.lStorage.localStorageStatus ? localStorage.setItem(localKey, 'checked') : null
     } else {
       let itemNo = this.pickedItems.indexOf(item);
-      localStorage.removeItem(localKey)
+      this.lStorage.localStorageStatus ? localStorage.removeItem(localKey) : null
       if (itemNo !== -1) {
         this.pickedItems.splice(itemNo, 1);
       }

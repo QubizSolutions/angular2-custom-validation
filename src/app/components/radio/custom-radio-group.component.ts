@@ -4,6 +4,7 @@ import { Field } from '../../models/field.model';
 import { InputGroup } from '../../models/input-group.model';
 import { RadioItem } from '../../models/radio-item.model';
 import { RadioField } from '../../models/radio-field.model';
+import { LocalStorageStatus } from '../../services/local-storage-status.service';
 
 @Component({
   selector: 'custom-radio-group',
@@ -22,7 +23,7 @@ import { RadioField } from '../../models/radio-field.model';
 })
 
 export class CustomRadioGroup extends InputGroup implements OnInit {
-  constructor(_validationMessages: ValidationMessages) {
+  constructor(_validationMessages: ValidationMessages, private lStorage: LocalStorageStatus) {
     super();
     this.errorMessage = "";
     this.validationMessages = _validationMessages;
@@ -34,32 +35,34 @@ export class CustomRadioGroup extends InputGroup implements OnInit {
   isValid: boolean;
 
   ngOnInit() {
-    // check localStorage in order to know how to set the values
-    this.validationObject.items.forEach((item) => {
-      if (localStorage.getItem(item.value) == 'checked'){
-        item.checked = true;
-        this.isValid = true;
-      }
-    })
-    
+    if (this.lStorage.localStorageStatus) {
+      // check localStorage in order to know how to set the values
+      this.validationObject.items.forEach((item) => {
+        if (localStorage.getItem(this.validationObject.radioButtonIdentifier + '.' + item.value) == 'checked'){
+          item.checked = true;
+          this.isValid = true;
+        }
+      })
+    }    
   }
 
   // Methods
 
   choice(value: string) {
-     
-    this.validationObject.items.forEach((item) => {
-        if (value == item.value){
-          item.checked = true;
-          if (item.checked == true) {
-            let localKey = this.validationObject.radioButtonIdentifier + '.' + item.value
-            localStorage.setItem(localKey, 'checked');
+    if (this.lStorage.localStorageStatus) {
+      this.validationObject.items.forEach((item) => {
+          let localKey = this.validationObject.radioButtonIdentifier + '.' + item.value
+          if (value == item.value){
+            item.checked = true;
+            if (item.checked == true) {
+              localStorage.setItem(localKey, 'checked');
+            }
+          } else {
+            item.checked = false;
+            localStorage.removeItem(localKey);
           }
-        } else {
-           item.checked = false;
-           localStorage.removeItem(item.value);
-        }
-    })
+      })
+    }
 
     if (this.validationObject.changeDesign != undefined) {
       this.validationObject.changeDesign(value);

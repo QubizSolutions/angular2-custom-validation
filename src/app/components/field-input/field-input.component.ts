@@ -4,6 +4,7 @@ import { Field } from '../../models/field.model'
 import { InputGroup } from '../../models/input-group.model'
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LocalStorageStatus } from '../../services/local-storage-status.service';
 
 @Component({
   selector: 'field-input',
@@ -28,7 +29,7 @@ export class FieldInput extends InputGroup implements OnInit {
   private errorMessage: string;
   private validationMessages: ValidationMessages;
 
-  constructor(_validationMessages: ValidationMessages) {
+  constructor(_validationMessages: ValidationMessages, private lStorage: LocalStorageStatus) {
     super();
     this.errorMessage = "";
     this.validationMessages = _validationMessages;
@@ -70,7 +71,8 @@ export class FieldInput extends InputGroup implements OnInit {
   }
 
   ngOnInit() {
-    if (localStorage.getItem(this.validationObject.label)) {
+    // if (this.validationObject.saveStorage) this.lStorage.localStorageStatus = false;
+    if (this.lStorage.localStorageStatus && localStorage.getItem(this.validationObject.label)) {
       let inputValue = localStorage.getItem(this.validationObject.label);
       this.myPrivateValue = inputValue;
     }
@@ -81,7 +83,7 @@ export class FieldInput extends InputGroup implements OnInit {
   storeValue(event) {
     let elem = event.target;
     let val = event.target.value.trim();
-    if (val !== '' && !this.errorMessage){
+    if (this.lStorage.localStorageStatus && val !== ''){
       localStorage.setItem(this.validationObject.label, val);
     }
   }

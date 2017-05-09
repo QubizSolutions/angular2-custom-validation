@@ -66,7 +66,10 @@
             <label for="lengthValidation">Length validation for First name enabled</label>
             <br>
             <input type="checkbox" id="nickNameValdation" [checked]="customForm.nickName.disabled" (change)="status()" />
-            <label for="nickNameValdation">Enable/Disable Input </label>
+            <label for="nickNameValdation">Disable Input </label>
+            <br>
+            <input type="checkbox" id="localstorageSave" [checked]="saveToLocalStorageEnabled" (change)="toggleSaveStorage()" />
+            <label for="localstorageSave">Save to LocalStorage </label>
         </div>
 
     </div>

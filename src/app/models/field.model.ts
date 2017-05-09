@@ -9,4 +9,5 @@ export class Field {
     minLength: number;
     maxLength: number;
     disabled: boolean;
+    saveStorage: boolean;
 }

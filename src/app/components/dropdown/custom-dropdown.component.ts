@@ -6,6 +6,7 @@ import { Field } from '../../models/field.model';
 import { DropdownField } from '../../models/dropdown-field.model';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import { LocalStorageStatus } from '../../services/local-storage-status.service';
 @Component({
   selector: 'custom-dropdown',
   styles: [`
@@ -44,7 +45,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 })
 
 export class CustomDropdown extends InputGroup implements OnInit {
-   constructor(private dbProvider: MyService) {
+   constructor(private dbProvider: MyService, private lStorage: LocalStorageStatus) {
     super();
   }
   
@@ -69,7 +70,7 @@ export class CustomDropdown extends InputGroup implements OnInit {
         this.incrementPage = 1;
         return this.initialItemsLoad(term)
       });
-      if (localStorage.getItem(this.validationObject.label)){
+      if (this.lStorage.localStorageStatus && localStorage.getItem(this.validationObject.label)){
         let lsDropdownValue = localStorage.getItem(this.validationObject.label);
         this.setSelected(lsDropdownValue);
       }
@@ -85,7 +86,7 @@ export class CustomDropdown extends InputGroup implements OnInit {
 
   setSelected(selected: string) {
     this.validationObject.value = selected;
-    if (this.validationObject.value !== null) {
+    if (this.lStorage.localStorageStatus && this.validationObject.value !== null) {
       localStorage.setItem(this.validationObject.label, this.validationObject.value)
     }
     if (this.errorMessage) {

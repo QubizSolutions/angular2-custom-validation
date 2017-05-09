@@ -8,9 +8,10 @@ import { FieldInput } from './components/field-input/field-input.component';
 import { CustomRadioGroup } from './components/radio/custom-radio-group.component';
 import { CustomCheckboxGroup } from './components/checkbox/custom-checkbox-group.component';
 
-import { CustomDropdown } from './components/dropdown/custom-dropdown.component'
+import { CustomDropdown } from './components/dropdown/custom-dropdown.component';
 import { MyService } from './services/sample.service';
-import { ValidationMessages } from './services/validation-messages.service'
+import { ValidationMessages } from './services/validation-messages.service';
+import { LocalStorageStatus } from './services/local-storage-status.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -26,7 +27,7 @@ import { HttpModule } from '@angular/http';
     FieldInput, 
     CustomDropdown
   ],
-  providers: [MyService, ValidationMessages],
+  providers: [MyService, ValidationMessages, LocalStorageStatus],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

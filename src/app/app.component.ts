@@ -11,6 +11,7 @@ import { CheckboxItem } from './models/checkbox-item.model';
 import { CheckboxField } from './models/checkbox-field.model';
 import { DropdownField } from './models/dropdown-field.model';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LocalStorageStatus } from './services/local-storage-status.service';
 @Component({
     selector: 'my-app',
     templateUrl: './app/app.component.html'
@@ -38,18 +39,35 @@ export class AppComponent {
     submitMessage: string = '';
     lengthValidationEnabled: boolean;
     validationRule: Function;
+    saveToLocalStorageEnabled: boolean;
+
 
     private validationMessages: ValidationMessages;
-    constructor(_validationMessages: ValidationMessages) {
+    constructor(_validationMessages: ValidationMessages, public lStorage: LocalStorageStatus) {
 
         this.validationMessages = _validationMessages;
         var _this = this;
+
+        // Validation Options
+
+        this.lengthValidationEnabled = true;     // Field min/max value length
+        this.saveToLocalStorageEnabled = false;  // Save to LocalStorage
+
+
+        if (localStorage.getItem('save') == 'true') {
+            this.saveToLocalStorageEnabled = true;
+            this.lStorage.toggleStatus(this.saveToLocalStorageEnabled);
+        } else {
+            this.saveToLocalStorageEnabled = false;
+            this.lStorage.toggleStatus(this.saveToLocalStorageEnabled);
+        }
 
         // Field Input Options
 
         // First name
         this.customForm.firstName.label = "First name"
         this.customForm.firstName.required = true;
+        this.customForm.firstName.saveStorage = true;
         this.customForm.firstName.customRule = function (value: string) {
             var errors = new Array<string>();
             if (value != undefined) {
@@ -127,7 +145,6 @@ export class AppComponent {
             new CheckboxItem(3, false, "Pasta")
         ]
         
-
         // Dropdown Components Options
 
         // Series
@@ -138,13 +155,9 @@ export class AppComponent {
         // Movies
         this.customForm.dropdownItems.movies.label = "Movies";
         this.customForm.dropdownItems.movies.dropdownItem = "movies";
-        this.customForm.dropdownItems.movies.required = true;
-
-        // Validation Options
-
-        // Field min/max value length
-        this.lengthValidationEnabled = true;
+        this.customForm.dropdownItems.movies.required = true;        
     }
+
 
     // Methods
     
@@ -155,6 +168,9 @@ export class AppComponent {
         if (this.valid) {
             this.submitMessage = 'Valid'
             localStorage.clear();
+            if (this.saveLStorage) {
+                localStorage.setItem('save', 'true');
+            }
         } else {
             this.submitMessage = 'Not Valid'
         }
@@ -162,6 +178,18 @@ export class AppComponent {
 
     // Enable/Disable specific fields
     status() {
-        this.customForm.nickName.disabled = !this.customForm.nickName.disabled
+        this.customForm.nickName.disabled = !this.customForm.nickName.disabled;
     }
+
+    // Enable/Disable setting values in localstorage
+    toggleSaveStorage() {
+        this.saveToLocalStorageEnabled = !this.saveToLocalStorageEnabled
+        if (!this.saveToLocalStorageEnabled) {
+            this.lStorage.toggleStatus(false);
+            localStorage.clear();
+        } else {
+            this.lStorage.toggleStatus(true);
+            localStorage.setItem('save', 'true');
+        }
+    } 
 }
