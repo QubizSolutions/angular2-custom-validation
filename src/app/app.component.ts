@@ -41,9 +41,8 @@ export class AppComponent {
     validationRule: Function;
     saveToLocalStorageEnabled: boolean;
 
-
     private validationMessages: ValidationMessages;
-    constructor(_validationMessages: ValidationMessages, public lStorage: LocalStorageStatus) {
+    constructor(_validationMessages: ValidationMessages, private lStorage: LocalStorageStatus) {
 
         this.validationMessages = _validationMessages;
         var _this = this;
@@ -53,21 +52,20 @@ export class AppComponent {
         this.lengthValidationEnabled = true;     // Field min/max value length
         this.saveToLocalStorageEnabled = false;  // Save to LocalStorage
 
-
         if (localStorage.getItem('save') == 'true') {
             this.saveToLocalStorageEnabled = true;
-            this.lStorage.toggleStatus(this.saveToLocalStorageEnabled);
-        } else {
+        } else if (localStorage.getItem('save') == 'false'){
             this.saveToLocalStorageEnabled = false;
-            this.lStorage.toggleStatus(this.saveToLocalStorageEnabled);
         }
+        
+        this.lStorage.toggleStatus(this.saveToLocalStorageEnabled);
 
         // Field Input Options
 
         // First name
         this.customForm.firstName.label = "First name"
         this.customForm.firstName.required = true;
-        this.customForm.firstName.saveStorage = true;
+        this.customForm.firstName.saveStorage = false;
         this.customForm.firstName.customRule = function (value: string) {
             var errors = new Array<string>();
             if (value != undefined) {
@@ -82,6 +80,7 @@ export class AppComponent {
         // Last name
         this.customForm.lastName.label = "Last name";
         this.customForm.lastName.required = true;
+        this.customForm.lastName.saveStorage = true;
 
         // Occupation
         this.customForm.occupation.label = "Occupation";
@@ -168,9 +167,8 @@ export class AppComponent {
         if (this.valid) {
             this.submitMessage = 'Valid'
             localStorage.clear();
-            if (this.saveLStorage) {
-                localStorage.setItem('save', 'true');
-            }
+            localStorage.setItem('save', this.saveToLocalStorageEnabled.toString());
+
         } else {
             this.submitMessage = 'Not Valid'
         }
@@ -184,12 +182,6 @@ export class AppComponent {
     // Enable/Disable setting values in localstorage
     toggleSaveStorage() {
         this.saveToLocalStorageEnabled = !this.saveToLocalStorageEnabled
-        if (!this.saveToLocalStorageEnabled) {
-            this.lStorage.toggleStatus(false);
-            localStorage.clear();
-        } else {
-            this.lStorage.toggleStatus(true);
-            localStorage.setItem('save', 'true');
-        }
+        this.lStorage.toggleStatus(this.saveToLocalStorageEnabled);
     } 
 }

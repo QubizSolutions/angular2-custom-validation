@@ -43,7 +43,7 @@ export class CustomRadioGroup extends InputGroup implements OnInit {
           this.isValid = true;
         }
       })
-    }    
+    }
   }
 
   // Methods

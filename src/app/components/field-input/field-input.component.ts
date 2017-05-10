@@ -71,20 +71,21 @@ export class FieldInput extends InputGroup implements OnInit {
   }
 
   ngOnInit() {
-    // if (this.validationObject.saveStorage) this.lStorage.localStorageStatus = false;
-    if (this.lStorage.localStorageStatus && localStorage.getItem(this.validationObject.label)) {
-      let inputValue = localStorage.getItem(this.validationObject.label);
-      this.myPrivateValue = inputValue;
+    if (this.validationObject.saveStorage == undefined) {
+      this.myPrivateValue = this.lStorage.getLocalStorageItem(this.lStorage.localStorageStatus, this.validationObject.label);
+    } else {
+      this.myPrivateValue = this.lStorage.getLocalStorageItem(this.validationObject.saveStorage, this.validationObject.label);
     }
   }
 
   // Methods
 
   storeValue(event) {
-    let elem = event.target;
     let val = event.target.value.trim();
-    if (this.lStorage.localStorageStatus && val !== ''){
-      localStorage.setItem(this.validationObject.label, val);
+    if (this.validationObject.saveStorage == undefined) {
+      this.lStorage.setLocalStorageItem(this.lStorage.localStorageStatus, val, this.validationObject.label);
+    } else {
+      this.lStorage.setLocalStorageItem(this.validationObject.saveStorage, val, this.validationObject.label);
     }
   }
 
@@ -96,4 +97,3 @@ export class FieldInput extends InputGroup implements OnInit {
     return this.errorMessage == "";
   }
 }
-
