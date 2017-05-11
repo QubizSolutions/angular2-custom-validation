@@ -35,34 +35,43 @@ export class CustomRadioGroup extends InputGroup implements OnInit {
   isValid: boolean;
 
   ngOnInit() {
-    if (this.lStorage.localStorageStatus) {
-      // check localStorage in order to know how to set the values
-      this.validationObject.items.forEach((item) => {
-        if (localStorage.getItem(this.validationObject.radioButtonIdentifier + '.' + item.value) == 'checked'){
-          item.checked = true;
-          this.isValid = true;
-        }
-      })
-    }
+    // check localStorage in order to know how to set the values
+    this.validationObject.items.forEach((item) => {
+      if (this.validationObject.saveStorage == undefined) {
+        this.populateFromStorage(this.lStorage.localStorageStatus, item);
+      } else {
+        this.populateFromStorage(this.validationObject.saveStorage, item);
+      }
+    })
   }
 
   // Methods
 
-  choice(value: string) {
-    if (this.lStorage.localStorageStatus) {
-      this.validationObject.items.forEach((item) => {
-          let localKey = this.validationObject.radioButtonIdentifier + '.' + item.value
-          if (value == item.value){
-            item.checked = true;
-            if (item.checked == true) {
-              localStorage.setItem(localKey, 'checked');
-            }
-          } else {
-            item.checked = false;
-            localStorage.removeItem(localKey);
-          }
-      })
+  populateFromStorage(value, item) {
+    if (this.lStorage.getLocalStorageItem(value, this.validationObject.radioButtonIdentifier + '.' + item.value) == 'checked'){
+      item.checked = true;
+      this.isValid = true;
     }
+  }
+
+  choice(value: string) {
+    this.validationObject.items.forEach((item) => {
+        let localKey = this.validationObject.radioButtonIdentifier + '.' + item.value;
+        if (value == item.value){
+          item.checked = true;
+          if (item.checked == true) {
+            if (this.validationObject.saveStorage == undefined) {
+              this.lStorage.setLocalStorageItem(this.lStorage.localStorageStatus, 'checked', localKey);
+            } else {
+              this.lStorage.setLocalStorageItem(this.validationObject.saveStorage, 'checked', localKey);
+            }
+          }
+        } else {
+          item.checked = false;
+          this.lStorage.removeLocalStorageItem(localKey);
+        }
+    })
+
 
     if (this.validationObject.changeDesign != undefined) {
       this.validationObject.changeDesign(value);

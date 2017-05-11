@@ -15,8 +15,8 @@ import { LocalStorageStatus } from '../../services/local-storage-status.service'
           type="text" 
           class="form-control form-control-danger form-control-success"
           [disabled]="validationObject.disabled" 
-          [value]="customText" 
-          (input)="customText = $event.target.value"
+          [value]="myPrivateValue" 
+          (input)="inputChange($event.target.value)"
           (blur)="storeValue($event)">
         <div class="form-control-feedback" [ngClass]="{ 'error_msg': errorMessage}">{{errorMessage}}</div>
       </div>
@@ -41,16 +41,8 @@ export class FieldInput extends InputGroup implements OnInit {
 
   @Input() validationObject: Field;
 
-  // customText getter
-  get customText() {
-    if (this.myPrivateValue == undefined) {
-      return "";
-    }
-    return this.myPrivateValue;
-  }
-
   // customText setter
-  set customText(val: string) {
+  inputChange(val: string) {
     this.myPrivateValue = val;
     var errors = new Array<string>();
     if (this.validationObject.required && !this.validationObject.disabled) {
@@ -76,6 +68,7 @@ export class FieldInput extends InputGroup implements OnInit {
     } else {
       this.myPrivateValue = this.lStorage.getLocalStorageItem(this.validationObject.saveStorage, this.validationObject.label);
     }
+    if (this.myPrivateValue == undefined) this.myPrivateValue = "";
   }
 
   // Methods
@@ -93,7 +86,7 @@ export class FieldInput extends InputGroup implements OnInit {
     if (this.myPrivateValue == undefined && !this.validationObject.disabled) {
       this.myPrivateValue = "";
     }
-    this.customText = this.myPrivateValue;
+    this.inputChange(this.myPrivateValue);
     return this.errorMessage == "";
   }
 }

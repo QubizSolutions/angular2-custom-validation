@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 const API_HOST = 'http://localhost:3000/';
 
 @Injectable()
-export class MyService {
+export class PaginatedSearch {
     constructor(private http: Http) {}
 
     searchEntries(stringField: Observable<string>, incrementPage: number, api: string): Observable<Array<string>> {

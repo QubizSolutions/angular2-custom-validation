@@ -1,6 +1,6 @@
 import { Component, forwardRef, Input, Output, OnChanges, OnInit, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MyService } from '../../services/sample.service';
+import { PaginatedSearch } from '../../services/paginated-search.service';
 import { InputGroup } from '../../models/input-group.model'
 import { Field } from '../../models/field.model';
 import { DropdownField } from '../../models/dropdown-field.model';
@@ -45,7 +45,7 @@ import { LocalStorageStatus } from '../../services/local-storage-status.service'
 })
 
 export class CustomDropdown extends InputGroup implements OnInit {
-   constructor(private dbProvider: MyService, private lStorage: LocalStorageStatus) {
+   constructor(private dbProvider: PaginatedSearch, private lStorage: LocalStorageStatus) {
     super();
   }
   

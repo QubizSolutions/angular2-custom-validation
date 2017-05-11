@@ -9,7 +9,7 @@ import { CustomRadioGroup } from './components/radio/custom-radio-group.componen
 import { CustomCheckboxGroup } from './components/checkbox/custom-checkbox-group.component';
 
 import { CustomDropdown } from './components/dropdown/custom-dropdown.component';
-import { MyService } from './services/sample.service';
+import { PaginatedSearch } from './services/paginated-search.service';
 import { ValidationMessages } from './services/validation-messages.service';
 import { LocalStorageStatus } from './services/local-storage-status.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -27,7 +27,7 @@ import { HttpModule } from '@angular/http';
     FieldInput, 
     CustomDropdown
   ],
-  providers: [MyService, ValidationMessages, LocalStorageStatus],
+  providers: [PaginatedSearch, ValidationMessages, LocalStorageStatus],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -34,16 +34,23 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
   }
 
   ngOnInit() {
-    if (this.lStorage.localStorageStatus) {
       this.validationObject.items.forEach((item) => {
-        if (localStorage.getItem(this.validationObject.title + ' ' + item.val) == 'checked'){
-          item.checked = true;
-          if (item.checked) {
-            this.pickedItems.push(item.val);
-            this.validationObject.checkedItems = this.pickedItems;
-          }
+        if (this.validationObject.saveStorage == undefined) {
+          this.populateFromStorage(this.lStorage.localStorageStatus, item);
+        } else {
+          this.populateFromStorage(this.validationObject.saveStorage, item);
+      }
+    })
+
+  }
+
+  populateFromStorage(value, item) {
+    if (this.lStorage.getLocalStorageItem(value, this.validationObject.title + ' ' + item.val) == 'checked'){
+        item.checked = true;
+        if (item.checked) {
+          this.pickedItems.push(item.val);
+          this.validationObject.checkedItems = this.pickedItems;
         }
-      })
     }
   }
 
@@ -58,13 +65,17 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
     let localKey = this.validationObject.title + ' ' + item;
     if (event.target.checked) {
       this.pickedItems.push(item);
-      this.lStorage.localStorageStatus ? localStorage.setItem(localKey, 'checked') : null
+      if (this.validationObject.saveStorage == undefined) {
+        this.lStorage.setLocalStorageItem(this.lStorage.localStorageStatus, 'checked', localKey);
+      } else {
+        this.lStorage.setLocalStorageItem(this.validationObject.saveStorage, 'checked', localKey);
+      }
     } else {
       let itemNo = this.pickedItems.indexOf(item);
-      this.lStorage.localStorageStatus ? localStorage.removeItem(localKey) : null
       if (itemNo !== -1) {
         this.pickedItems.splice(itemNo, 1);
       }
+      this.lStorage.removeLocalStorageItem(localKey);
     }
     this.validationObject.checkedItems = this.pickedItems;
 

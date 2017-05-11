@@ -1,5 +1,3 @@
-import { RadioItem } from './radio-item.model';
-
 export class Field {
     label: string;
     value: string;
