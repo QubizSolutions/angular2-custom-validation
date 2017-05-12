@@ -26,10 +26,9 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
 
   pickedItems: Array<string>;
 
-  constructor(_validationMessages: ValidationMessages, private lStorage: LocalStorageStatus) {
+  constructor(private validationMessages: ValidationMessages, private lStorage: LocalStorageStatus) {
     super();
     this.errorMessage = "";
-    this.validationMessages = _validationMessages;
     this.pickedItems = new Array;
   }
 
@@ -57,7 +56,6 @@ export class CustomCheckboxGroup extends InputGroup implements OnInit {
   @Input() validationObject: CheckboxField;
   
   private errorMessage: string;
-  private validationMessages: ValidationMessages;
 
   // Methods
 

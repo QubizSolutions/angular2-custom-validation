@@ -27,12 +27,10 @@ import { LocalStorageStatus } from '../../services/local-storage-status.service'
 export class FieldInput extends InputGroup implements OnInit {
 
   private errorMessage: string;
-  private validationMessages: ValidationMessages;
 
-  constructor(_validationMessages: ValidationMessages, private lStorage: LocalStorageStatus) {
+  constructor(private validationMessages: ValidationMessages, private lStorage: LocalStorageStatus) {
     super();
     this.errorMessage = "";
-    this.validationMessages = _validationMessages;
   }
 
   

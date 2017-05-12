@@ -31,7 +31,6 @@
         </div>
         <div class="col-6">
             <custom-checkbox-group [validationObject]="customForm.favoriteFood"></custom-checkbox-group>
-             
         </div>
         <div class="col-6">
              <div>Value: {{customForm.changeLayout.value ? customForm.changeLayout.value : 'None'}}</div>
@@ -54,6 +53,7 @@
             <custom-dropdown [validationObject]="customForm.dropdownItems.movies"></custom-dropdown>
             <br>
         </div>
+        
 
         <div class="col-12">
             <button type="submit" class="btn btn-outline-primary" (click)="submit()">Submit</button>
@@ -71,6 +71,9 @@
             <input type="checkbox" id="localstorageSave" [checked]="saveToLocalStorageEnabled" (change)="toggleSaveStorage()" />
             <label for="localstorageSave">Save to LocalStorage </label>
         </div>
+ 
 
     </div>
 </div>
+
+<form-validation></form-validation>
